@@ -6,6 +6,7 @@ export default {
       colors: {
         secondary: "#FFA466",
         mainBg: "#FFDCB4",
+        PrimaryText: "#46230A",
       },
     },
   },

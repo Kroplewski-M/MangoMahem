@@ -2,7 +2,7 @@ interface LogoInterface {
   width: number;
   height: number;
 }
-export const Logo = ({ width, height }: LogoInterface) => {
+export const LogoSVG = ({ width, height }: LogoInterface) => {
   return (
     <svg
       width={width}
