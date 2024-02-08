@@ -33,7 +33,7 @@ export const Nav = () => {
   }, [windowSize]);
 
   return (
-    <nav className={`w-[100vw] h-[70px] bg-secondary duration-200 ease-linear flex relative z-[100] sticky top-0`}>
+    <nav className={`w-[100vw] h-[70px] bg-secondary duration-200 ease-linear flex relative z-[100] sticky top-0 shadow-lg`}>
       <div className="self-center flex pl-[10px] hover:cursor-pointer">
         <LogoSVG width={50} height={50} />
         <p className="font-bold self-center pl-2 text-PrimaryText">Mango Mahem</p>
@@ -46,11 +46,11 @@ export const Nav = () => {
         <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Create</p>
         <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Leaderboard</p>
         <div className="md:absolute top-3 right-10 flex place-content-center">
-          <div className="flex">
+          <div className="flex mt-[3px]">
             <LogoSVG width={30} height={30} />
             <p className="text-PrimaryText font-bold">150</p>
           </div>
-          <div className="hover:cursor-pointer">
+          <div className="hover:cursor-pointer ml-[15px]">
             <UserSvg width={35} height={35} fill="#46230A" />
           </div>
         </div>
