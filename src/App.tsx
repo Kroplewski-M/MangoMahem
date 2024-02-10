@@ -1,12 +1,18 @@
+import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
 import { Home } from "./pages/Home";
+import { Register } from "./pages/Register";
 
 function App() {
   return (
-    <section className="min-h-[100vh] bg-mainBg pb-16">
-      <Nav />
-      <Home />
-    </section>
+    <div>
+      <section className="min-h-[100vh] bg-mainBg">
+        <Nav />
+        {/* <Home /> */}
+        <Register />
+      </section>
+      <Footer />
+    </div>
   );
 }
 
