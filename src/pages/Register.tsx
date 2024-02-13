@@ -3,7 +3,7 @@ import { FruitBowlSVG } from "../assets/SVG/FruitBowlSVG";
 export const Register = () => {
   return (
     <section className="w-[100vw] min-h-[100vh] flex flex-col flex-col-reverse md:flex-row">
-      <div className="md:w-[50%] w-[100%] h-[100vh] bg-secondary/50 flex relative">
+      <div className="md:w-[50%] w-[100%] h-[100vh] flex relative svgBg">
         <div className="flex self-center flex-col text-center w-[100%] -mt-16">
           <div className="width-[300px] height-[300px] mx-auto absolute opacity-[0.5]">
             <FruitBowlSVG width={300} height={300} fill="#FFFFFF" />
@@ -11,36 +11,36 @@ export const Register = () => {
           <p className="text-[40px] font-bold text-PrimaryText z-[50]">Already have an account?</p>
           <p className="text-[30px] font-bold text-PrimaryText z-[50]">Log in now</p>
           <div className="mx-auto w-[150px] h-[35px] mt-5 z-[50]">
-            <button className="w-[100%] h-[100%] bg-secondary hover:font-bold rounded shadow-md ">Log in</button>
+            <button className="w-[100%] h-[100%] bg-PrimaryText hover:font-bold rounded shadow-md text-gray-100">Log in</button>
           </div>
         </div>
       </div>
-      <div className="md:w-[50%] w-[100%] h-[100vh] bg-red-200 flex relative">
-        <div className="flex self-center flex-col text-center w-[100%]">
-          <p className="text-[40px] font-bold text-PrimaryText z-[50]">Register an account</p>
-          <form action="">
-            <div>
-              <label htmlFor="firstname">First name</label>
-              <input type="text" name="firstname" />
+      <div className="md:w-[50%] w-[100%] h-[100vh] bg-red-100 flex relative">
+        <div className="flex self-center flex-col w-[100%]">
+          <p className="text-[40px] font-bold text-PrimaryText z-[50] text-center mb-5">Register an account</p>
+          <form action="" className="w-[300px] mx-auto ">
+            <div className="flex flex-col ">
+              <label htmlFor="firstname" className="text-[20px] font-bold">First name</label>
+              <input type="text" name="firstname" className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none" placeholder="John" />
             </div>
-            <div>
-              <label htmlFor="lastname">Last name</label>
-              <input type="text" name="lasttname" />
+            <div className="mt-[10px]">
+              <label htmlFor="lastname" className="text-[20px] font-bold">Last name</label>
+              <input type="text" name="lastname" className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none" placeholder="Doe" />
             </div>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input type="email" name="email" />
+            <div className="mt-[10px]">
+              <label htmlFor="email" className="text-[20px] font-bold">Email</label>
+              <input type="email" name="email" className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none" placeholder="johndoe@gmail.com" />
             </div>
-            <div>
-              <label htmlFor="password">Password</label>
-              <input type="password" name="password" />
+            <div className="mt-[10px]">
+              <label htmlFor="password" className="text-[20px] font-bold">Password</label>
+              <input type="password" name="password" className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none" placeholder="Password"/>
             </div>
-            <div>
-              <label htmlFor="passwordConf">Confirm password</label>
-              <input type="text" name="passwordConf" />
+            <div className="mt-[10px]">
+              <label htmlFor="passwordConf" className="text-[20px] font-bold">Confirm password</label>
+              <input type="text" name="passwordConf" className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none" placeholder="Confirm Password"/>
             </div>
-            <div>
-              <button>Register</button>
+            <div className="w-[170px] h-[35px] mx-auto mt-5">
+              <button className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">Register</button>
             </div>
           </form>
         </div>

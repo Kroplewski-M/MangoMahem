@@ -1,6 +1,7 @@
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
 import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <Nav />
         {/* <Home /> */}
         <Register />
+        {/* <Login /> */}
       </section>
       <Footer />
     </div>
