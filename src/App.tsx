@@ -1,3 +1,4 @@
+import { Route, Routes } from "react-router-dom";
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
 import { Home } from "./pages/Home";
@@ -9,9 +10,11 @@ function App() {
     <div>
       <section className="min-h-[100vh] bg-mainBg">
         <Nav />
-        {/* <Home /> */}
-        <Register />
-        {/* <Login /> */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </section>
       <Footer />
     </div>

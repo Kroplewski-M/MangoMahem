@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { LogoSVG } from "../assets/SVG/LogoSVG";
 import { UserSvg } from "../assets/SVG/UserSVG";
 import { MenuSVG } from "../assets/SVG/MenuSVG";
+import { useNavigate } from "react-router-dom";
 
 export const Nav = () => {
   const [openNav, setOpenNav] = useState(false);
   const [windowSize, setWindowSize] = useState<number>(getWindowSize());
   const mobileLimit: number = 768;
+  const navigate = useNavigate();
 
   function getWindowSize() {
     const innerWidth: number = window.innerWidth;
@@ -36,7 +38,9 @@ export const Nav = () => {
     <nav className={`w-[100vw] h-[70px] bg-secondary duration-200 ease-linear flex relative z-[100] sticky top-0 shadow-lg`}>
       <div className="self-center flex pl-[10px] hover:cursor-pointer">
         <LogoSVG width={50} height={50} />
-        <p className="font-bold self-center pl-2 text-PrimaryText">Mango Mayhem</p>
+        <p className="font-bold self-center pl-2 text-PrimaryText" onClick={() => navigate("/")}>
+          Mango Mayhem
+        </p>
       </div>
       <div className={`flex-row ${openNav ? "fixed top-0 right-0 bg-secondary w-[90%] h-[100vh] text-center pt-10 animate-SlideIn" : "hidden"} md:inline-flex self-center w-[380px] mx-auto`}>
         <div className="absolute right-5 top-5 hover:cursor-pointer md:hidden" onClick={() => setOpenNav(false)}>
