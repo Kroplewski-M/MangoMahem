@@ -3,12 +3,14 @@ import { LogoSVG } from "../assets/SVG/LogoSVG";
 import { UserSvg } from "../assets/SVG/UserSVG";
 import { MenuSVG } from "../assets/SVG/MenuSVG";
 import { useNavigate } from "react-router-dom";
+import { useUserInfo } from "../context/UserContext";
 
 export const Nav = () => {
   const [openNav, setOpenNav] = useState(false);
   const [windowSize, setWindowSize] = useState<number>(getWindowSize());
   const mobileLimit: number = 768;
   const navigate = useNavigate();
+  const { isLoggedIn } = useUserInfo();
 
   function getWindowSize() {
     const innerWidth: number = window.innerWidth;
@@ -34,6 +36,14 @@ export const Nav = () => {
     }
   }, [windowSize]);
 
+  const navigateUser = () => {
+    if (isLoggedIn()) {
+      navigate("/userProfile");
+      return;
+    }
+    navigate("/login");
+    return;
+  };
   return (
     <nav className={`w-[100vw] h-[70px] bg-secondary duration-200 ease-linear flex relative z-[100] sticky top-0 shadow-lg`}>
       <div className="self-center flex pl-[10px] hover:cursor-pointer">
@@ -50,11 +60,11 @@ export const Nav = () => {
         <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Create</p>
         <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Leaderboard</p>
         <div className="md:absolute top-3 right-10 flex place-content-center">
-          <div className="flex mt-[3px]">
+          <div className={`flex mt-[3px] ${isLoggedIn() ? "" : "hidden"}`}>
             <LogoSVG width={30} height={30} />
             <p className="text-PrimaryText font-bold">150</p>
           </div>
-          <div className="hover:cursor-pointer ml-[15px]">
+          <div className="hover:cursor-pointer ml-[15px]" onClick={navigateUser}>
             <UserSvg width={35} height={35} fill="#46230A" />
           </div>
         </div>

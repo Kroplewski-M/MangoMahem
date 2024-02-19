@@ -1,7 +1,37 @@
 import { FruitBowlSVG } from "../assets/SVG/FruitBowlSVG";
 import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+
+type Inputs = {
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  Password: string;
+};
+
 export const Register = () => {
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    const user = await createUserWithEmailAndPassword(auth, data.Email, data.Password);
+
+    await setDoc(doc(db, "users", user.user.uid), {
+      UID: user.user.uid,
+      DisplayName: `${data.FirstName} ${data.LastName}`,
+      FirstName: data.FirstName,
+      LastName: data.LastName,
+      Email: data.Email,
+    });
+  };
   return (
     <section className="w-[100vw] min-h-[100vh] flex flex-col flex-col-reverse md:flex-row">
       <div className="md:w-[50%] w-[100%] h-[100vh] flex relative svgBg">
@@ -21,18 +51,30 @@ export const Register = () => {
       <div className="md:w-[50%] w-[100%] h-[100vh] bg-red-100 flex relative">
         <div className="flex self-center flex-col w-[100%]">
           <p className="text-[40px] font-bold text-PrimaryText z-[50] text-center mb-5">Register an account</p>
-          <form action="" className="w-[300px] mx-auto ">
-            <div className="flex flex-col ">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-[300px] mx-auto ">
+            <div className="flex flex-col">
               <label htmlFor="firstname" className="text-[20px] font-bold">
                 First name
               </label>
-              <input type="text" name="firstname" className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none" placeholder="John" />
+              <input
+                type="text"
+                className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none"
+                {...register("FirstName", { required: "Required" })}
+                placeholder="John"
+              />
+              <p className="font-light text-red-700">{errors.FirstName?.message}</p>
             </div>
             <div className="mt-[10px]">
               <label htmlFor="lastname" className="text-[20px] font-bold">
                 Last name
               </label>
-              <input type="text" name="lastname" className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none" placeholder="Doe" />
+              <input
+                type="text"
+                className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none"
+                {...register("LastName", { required: "Required" })}
+                placeholder="Doe"
+              />
+              <p className="font-light text-red-700">{errors.LastName?.message}</p>
             </div>
             <div className="mt-[10px]">
               <label htmlFor="email" className="text-[20px] font-bold">
@@ -40,10 +82,11 @@ export const Register = () => {
               </label>
               <input
                 type="email"
-                name="email"
                 className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none"
+                {...register("Email", { required: "Required" })}
                 placeholder="johndoe@gmail.com"
               />
+              <p className="font-light text-red-700">{errors.Email?.message}</p>
             </div>
             <div className="mt-[10px]">
               <label htmlFor="password" className="text-[20px] font-bold">
@@ -51,24 +94,22 @@ export const Register = () => {
               </label>
               <input
                 type="password"
-                name="password"
                 className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none"
+                {...register("Password", {
+                  required: "Required",
+                  minLength: {
+                    value: 6,
+                    message: "Min characters:6",
+                  },
+                })}
                 placeholder="Password"
               />
-            </div>
-            <div className="mt-[10px]">
-              <label htmlFor="passwordConf" className="text-[20px] font-bold">
-                Confirm password
-              </label>
-              <input
-                type="text"
-                name="passwordConf"
-                className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none"
-                placeholder="Confirm Password"
-              />
+              <p className="font-light text-red-700">{errors.Password?.message}</p>
             </div>
             <div className="w-[170px] h-[35px] mx-auto mt-5">
-              <button className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">Register</button>
+              <button type="submit" className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">
+                Register
+              </button>
             </div>
           </form>
         </div>
