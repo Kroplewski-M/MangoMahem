@@ -1,7 +1,55 @@
 import { FruitBowlSVG } from "../assets/SVG/FruitBowlSVG";
 import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {doc, getDoc} from "firebase/firestore";
+import { useUserInfo } from "../context/UserContext";
+import { db } from "../firebase";
+
+
+type Inputs = {
+  Email: string;
+  Password: string;
+};
 export const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const {loginUser} = useUserInfo();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
+    try{
+      const auth = getAuth();
+      const user = await signInWithEmailAndPassword(auth,data.Email, data.Password);
+      const userDocRef = doc(db, "users", user.user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+      const pointsDocRef = doc(db, "userScores", user.user.uid);
+      const pointsDocSnap = await getDoc(pointsDocRef);
+
+      if(userDocSnap.exists() && pointsDocSnap.exists()){
+        loginUser({
+          uid:user.user.uid,
+          displayName:userDocSnap.data().DisplayName,
+          email:user.user.email!=null?user.user.email:"", 
+          score:pointsDocSnap.data().Score
+        });
+      }
+      navigate("/quizes");
+
+    }catch(e){
+      console.error(e);
+    }finally{
+      setLoading(false);
+    }
+  };
+
 
   return (
     <section className="w-[100vw] min-h-[100vh] flex flex-col flex-col-reverse md:flex-row md:flex-row-reverse">
@@ -22,17 +70,18 @@ export const Login = () => {
       <div className="md:w-[50%] w-[100%] h-[100vh] bg-red-100 flex relative">
         <div className="flex self-center flex-col w-[100%]">
           <p className="text-[40px] font-bold text-PrimaryText z-[50] text-center mb-5">Login</p>
-          <form action="" className="w-[300px] mx-auto ">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-[300px] mx-auto ">
             <div className="mt-[10px]">
               <label htmlFor="email" className="text-[20px] font-bold">
                 Email
               </label>
               <input
                 type="email"
-                name="email"
                 className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none"
                 placeholder="johndoe@gmail.com"
+                {...register("Email", { required: "Required" })}
               />
+              <p className="font-light text-red-700">{errors.Email?.message}</p>
             </div>
             <div className="mt-[10px]">
               <label htmlFor="password" className="text-[20px] font-bold">
@@ -40,10 +89,12 @@ export const Login = () => {
               </label>
               <input
                 type="password"
-                name="password"
                 className="w-[300px] h-[35px] rounded-md mx-auto pl-[5px] border-b-[5px] border-b-secondary bg-transparent focus:outline-none"
                 placeholder="Password"
+                {...register("Password", { required: "Required" })}
               />
+              <p className="font-light text-red-700">{errors.Password?.message}</p>
+
             </div>
             <div className="w-[170px] h-[35px] mx-auto mt-5">
               <button className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">Login</button>

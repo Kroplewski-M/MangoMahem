@@ -6,6 +6,7 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { UserContext } from "./context/UserContext";
 import { Quizes } from "./pages/Quizes";
+import Authguard from "./components/AuthGuard";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/quizes" element={<Quizes />} />
+            <Route element={<Authguard/>}>
+              <Route path="/quizes" element={<Quizes />} />
+            </Route>
           </Routes>
         </UserContext>
       </section>

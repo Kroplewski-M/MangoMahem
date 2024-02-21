@@ -11,6 +11,7 @@ export const Nav = () => {
   const mobileLimit: number = 768;
   const navigate = useNavigate();
   const { isLoggedIn } = useUserInfo();
+  const {userInfo} = useUserInfo();
 
   function getWindowSize() {
     const innerWidth: number = window.innerWidth;
@@ -62,7 +63,7 @@ export const Nav = () => {
         <div className="md:absolute top-3 right-10 flex place-content-center">
           <div className={`flex mt-[3px] ${isLoggedIn() ? "" : "hidden"}`}>
             <LogoSVG width={30} height={30} />
-            <p className="text-PrimaryText font-bold">150</p>
+            <p className="text-PrimaryText font-bold">{userInfo.score}</p>
           </div>
           <div className="hover:cursor-pointer ml-[15px]" onClick={navigateUser}>
             <UserSvg width={35} height={35} fill="#46230A" />
