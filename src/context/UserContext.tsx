@@ -4,6 +4,7 @@ interface userProps {
   uid: string;
   email: string;
   displayName: string;
+  score: number;
 }
 interface UserProvider {
   userInfo: userProps;
@@ -20,17 +21,18 @@ export const useUserInfo = () => {
   return useContext(UserProvider);
 };
 export const UserContext = ({ children }: userProviderProps) => {
-  const [userInfo, setUserInfo] = useState<userProps>({ uid: "", email: "", displayName: "" });
+  const [userInfo, setUserInfo] = useState<userProps>({ uid: "", email: "", displayName: "",score:0 });
 
   const loginUser = (info: userProps) => {
     setUserInfo({
       uid: info.uid,
       email: info.email,
       displayName: info.displayName,
+      score:info.score
     });
   };
   const logoutUser = () => {
-    setUserInfo({ uid: "", email: "", displayName: "" });
+    setUserInfo({ uid: "", email: "", displayName: "",score:0 });
   };
   const isLoggedIn = () => {
     if (userInfo.uid != "") {

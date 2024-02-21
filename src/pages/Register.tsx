@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useState } from "react";
+import { useUserInfo } from "../context/UserContext";
 
 type Inputs = {
   FirstName: string;
@@ -14,6 +16,8 @@ type Inputs = {
 
 export const Register = () => {
   const navigate = useNavigate();
+  const {loginUser} = useUserInfo();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -21,7 +25,7 @@ export const Register = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
+    setLoading(true);
     const user = await createUserWithEmailAndPassword(auth, data.Email, data.Password);
 
     await setDoc(doc(db, "users", user.user.uid), {
@@ -31,6 +35,18 @@ export const Register = () => {
       LastName: data.LastName,
       Email: data.Email,
     });
+    await setDoc(doc(db, "userScores", user.user.uid), {
+      UID: user.user.uid,
+      Score: 0,
+    });
+    setLoading(false);
+    loginUser({
+      uid:user.user.uid,
+      displayName:`${data.FirstName} ${data.LastName}`,
+      email:user.user.email!=null?user.user.email:"", 
+      score:0
+      });
+    navigate("/quizes");
   };
   return (
     <section className="w-[100vw] min-h-[100vh] flex flex-col flex-col-reverse md:flex-row">
@@ -107,7 +123,7 @@ export const Register = () => {
               <p className="font-light text-red-700">{errors.Password?.message}</p>
             </div>
             <div className="w-[170px] h-[35px] mx-auto mt-5">
-              <button type="submit" className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">
+              <button type="submit" disabled={loading} className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">
                 Register
               </button>
             </div>
