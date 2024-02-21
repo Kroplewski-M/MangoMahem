@@ -97,7 +97,7 @@ export const Login = () => {
 
             </div>
             <div className="w-[170px] h-[35px] mx-auto mt-5">
-              <button className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">Login</button>
+              <button disabled={loading} className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">Login</button>
             </div>
           </form>
         </div>

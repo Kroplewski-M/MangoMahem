@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../context/UserContext";
 
 
 export const Quizes = () => {
-    const navigate = useNavigate();
     const {userInfo} = useUserInfo();
     return (
         <div>
