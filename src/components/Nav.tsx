@@ -57,7 +57,7 @@ export const Nav = () => {
         <div className="absolute right-5 top-5 hover:cursor-pointer md:hidden" onClick={() => setOpenNav(false)}>
           X
         </div>
-        <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Quizzes</p>
+        <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5" onClick={()=>navigate('/quizes')}>Quizzes</p>
         <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Create</p>
         <p className="font-bold text-PrimaryText hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Leaderboard</p>
         <div className="md:absolute top-3 right-10 flex place-content-center">
