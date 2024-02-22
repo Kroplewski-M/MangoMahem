@@ -39,7 +39,7 @@ function App() {
   },[])
   return (
     <div>
-      <section className="min-h-[100vh] bg-mainBg">
+      <section className="min-h-[100vh] bg-mainBg pb-5">
           <Nav />
           <Routes>
             <Route path="/" element={<Home />} />
