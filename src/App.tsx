@@ -9,47 +9,68 @@ import { Quizes } from "./pages/Quizes";
 import Authguard from "./components/AuthGuard";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";import { auth, db } from "./firebase";
+import { useNavigate } from "react-router-dom";
+import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { UserProfile } from "./pages/UserProfile";
+import { NotificationType, useNotifications } from "./context/NotificationsContext";
 
 function App() {
   const navigate = useNavigate();
-  const {loginUser} = useUserInfo();
+  const { loginUser } = useUserInfo();
+  const { notifications } = useNotifications();
 
-  useEffect(()=>{
+  useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
         const pointsDocRef = doc(db, "userScores", user.uid);
         const pointsDocSnap = await getDoc(pointsDocRef);
-  
-        if(userDocSnap.exists() && pointsDocSnap.exists()){
+
+        if (userDocSnap.exists() && pointsDocSnap.exists()) {
           loginUser({
-            uid:user.uid,
-            displayName:userDocSnap.data().DisplayName,
-            email:user.email!=null?user.email:"", 
-            score:pointsDocSnap.data().Score
+            uid: user.uid,
+            displayName: userDocSnap.data().DisplayName,
+            email: user.email != null ? user.email : "",
+            score: pointsDocSnap.data().Score,
           });
         }
-      navigate('/quizes');
-      } 
+        navigate("/quizes");
+      }
     });
-  },[])
+  }, []);
+  const getNotificationStyle = (type: NotificationType) => {
+    if (type == NotificationType.Error) {
+      return "bg-ErrorNotification text-gray-200";
+    } else if (type == NotificationType.Success) {
+      return "bg-SuccessNotification text-[#333333]";
+    } else if (type == NotificationType.Info) {
+      return "bg-InfoNotification text-[#333333]";
+    } else {
+      return "bg-WarningNotificartion text-[#333333]";
+    }
+  };
   return (
     <div>
       <section className="min-h-[100vh] bg-mainBg pb-5">
-          <Nav />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route element={<Authguard/>}>
-              <Route path="/quizes" element={<Quizes />} />
-              <Route path="/userProfile" element={<UserProfile />} />
-            </Route>
-          </Routes>
+        <Nav />
+        <div className="flex flex-col fixed top-10 right-10 z-[110]">
+          {notifications.map((notification) => (
+            <div className={`${getNotificationStyle(notification.type)} p-3 font-bold mt-3 rounded-[5px]`} key={notification.message}>
+              <p className="text-[20px]">{notification.message}</p>
+            </div>
+          ))}
+        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route element={<Authguard />}>
+            <Route path="/quizes" element={<Quizes />} />
+            <Route path="/userProfile" element={<UserProfile />} />
+          </Route>
+        </Routes>
       </section>
       <Footer />
     </div>

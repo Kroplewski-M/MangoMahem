@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import {doc, getDoc} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useUserInfo } from "../context/UserContext";
 import { db } from "../firebase";
-
+import { NotificationType, useNotifications } from "../context/NotificationsContext";
 
 type Inputs = {
   Email: string;
@@ -15,41 +15,42 @@ type Inputs = {
 export const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const {loginUser} = useUserInfo();
+  const { loginUser } = useUserInfo();
+  const { PushNotifictionMessage } = useNotifications();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
 
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
-    try{
+    PushNotifictionMessage("Logging in please wait...", NotificationType.Info);
+    try {
       const auth = getAuth();
-      const user = await signInWithEmailAndPassword(auth,data.Email, data.Password);
+      const user = await signInWithEmailAndPassword(auth, data.Email, data.Password);
       const userDocRef = doc(db, "users", user.user.uid);
       const userDocSnap = await getDoc(userDocRef);
       const pointsDocRef = doc(db, "userScores", user.user.uid);
       const pointsDocSnap = await getDoc(pointsDocRef);
 
-      if(userDocSnap.exists() && pointsDocSnap.exists()){
+      if (userDocSnap.exists() && pointsDocSnap.exists()) {
         loginUser({
-          uid:user.user.uid,
-          displayName:userDocSnap.data().DisplayName,
-          email:user.user.email!=null?user.user.email:"", 
-          score:pointsDocSnap.data().Score
+          uid: user.user.uid,
+          displayName: userDocSnap.data().DisplayName,
+          email: user.user.email != null ? user.user.email : "",
+          score: pointsDocSnap.data().Score,
         });
       }
+      PushNotifictionMessage("Successfully logged in", NotificationType.Success);
       navigate("/quizes");
-
-    }catch(e){
+    } catch (e) {
       console.error(e);
-    }finally{
+      PushNotifictionMessage("Error occured...", NotificationType.Error);
+    } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <section className="w-[100vw] min-h-[100vh] flex flex-col flex-col-reverse md:flex-row md:flex-row-reverse">
@@ -94,10 +95,11 @@ export const Login = () => {
                 {...register("Password", { required: "Required" })}
               />
               <p className="font-light text-red-700">{errors.Password?.message}</p>
-
             </div>
             <div className="w-[170px] h-[35px] mx-auto mt-5">
-              <button disabled={loading} className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">Login</button>
+              <button disabled={loading} className="w-[100%] h-[100%] bg-secondary rounded-md hover:font-bold">
+                Login
+              </button>
             </div>
           </form>
         </div>

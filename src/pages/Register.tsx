@@ -6,6 +6,7 @@ import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useUserInfo } from "../context/UserContext";
+import { NotificationType, useNotifications } from "../context/NotificationsContext";
 
 type Inputs = {
   FirstName: string;
@@ -16,7 +17,8 @@ type Inputs = {
 
 export const Register = () => {
   const navigate = useNavigate();
-  const {loginUser} = useUserInfo();
+  const { loginUser } = useUserInfo();
+  const { PushNotifictionMessage } = useNotifications();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -26,27 +28,32 @@ export const Register = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
+    PushNotifictionMessage("Creating Account...", NotificationType.Info);
     const user = await createUserWithEmailAndPassword(auth, data.Email, data.Password);
-
-    await setDoc(doc(db, "users", user.user.uid), {
-      UID: user.user.uid,
-      DisplayName: `${data.FirstName} ${data.LastName}`,
-      FirstName: data.FirstName,
-      LastName: data.LastName,
-      Email: data.Email,
-    });
-    await setDoc(doc(db, "userScores", user.user.uid), {
-      UID: user.user.uid,
-      Score: 0,
-    });
-    setLoading(false);
-    loginUser({
-      uid:user.user.uid,
-      displayName:`${data.FirstName} ${data.LastName}`,
-      email:user.user.email!=null?user.user.email:"", 
-      score:0
+    try {
+      await setDoc(doc(db, "users", user.user.uid), {
+        UID: user.user.uid,
+        DisplayName: `${data.FirstName} ${data.LastName}`,
+        FirstName: data.FirstName,
+        LastName: data.LastName,
+        Email: data.Email,
       });
-    navigate("/quizes");
+      await setDoc(doc(db, "userScores", user.user.uid), {
+        UID: user.user.uid,
+        Score: 0,
+      });
+      setLoading(false);
+      loginUser({
+        uid: user.user.uid,
+        displayName: `${data.FirstName} ${data.LastName}`,
+        email: user.user.email != null ? user.user.email : "",
+        score: 0,
+      });
+      navigate("/quizes");
+      PushNotifictionMessage("Acccount Created Successfully", NotificationType.Success);
+    } catch (error) {
+      PushNotifictionMessage("Error occured, please try again later...", NotificationType.Error);
+    }
   };
   return (
     <section className="w-[100vw] min-h-[100vh] flex flex-col flex-col-reverse md:flex-row">
