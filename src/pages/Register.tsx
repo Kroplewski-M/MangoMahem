@@ -71,7 +71,7 @@ export const Register = () => {
           </div>
         </div>
       </div>
-      <div className="md:w-[50%] w-[100%] h-[100vh] bg-red-100 flex relative">
+      <div className="md:w-[50%] w-[100%] h-[100vh] flex relative bg-mainBg">
         <div className="flex self-center flex-col w-[100%]">
           <p className="text-[40px] font-bold text-PrimaryText z-[50] text-center mb-5">Register an account</p>
           <form onSubmit={handleSubmit(onSubmit)} className="w-[300px] mx-auto ">
@@ -123,6 +123,9 @@ export const Register = () => {
                   minLength: {
                     value: 6,
                     message: "Min characters:6",
+                  },
+                  validate: {
+                    hasCapitalLetter: (value) => /[A-Z]/.test(value) || "Must contain at least one capital letter",
                   },
                 })}
                 placeholder="Password"

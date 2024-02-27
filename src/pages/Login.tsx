@@ -68,7 +68,7 @@ export const Login = () => {
           </div>
         </div>
       </div>
-      <div className="md:w-[50%] w-[100%] h-[100vh] bg-red-100 flex relative">
+      <div className="md:w-[50%] w-[100%] h-[100vh] bg-mainBg flex relative">
         <div className="flex self-center flex-col w-[100%]">
           <p className="text-[40px] font-bold text-PrimaryText z-[50] text-center mb-5">Login</p>
           <form onSubmit={handleSubmit(onSubmit)} className="w-[300px] mx-auto ">
