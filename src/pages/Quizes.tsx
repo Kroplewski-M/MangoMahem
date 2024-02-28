@@ -1,5 +1,6 @@
 import { AddSVG } from "../assets/SVG/AddSVG";
 import { SearchSVG } from "../assets/SVG/SearchSVG";
+import { QuizCard } from "../components/QuizCard";
 
 export const Quizes = () => {
   return (
@@ -22,6 +23,24 @@ export const Quizes = () => {
             <span className="pl-[5px] font-bold"> Create A Quiz </span>
           </button>
         </div>
+      </div>
+      <h1 className="font-bold text-[27px] text-PrimaryText mt-5">Quizzes</h1>
+      <div className="mt-5 w-[100%] flex flex-wrap flex-col md:flex-row place-content-center md:place-content-start">
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
+        <QuizCard />
       </div>
     </div>
   );
