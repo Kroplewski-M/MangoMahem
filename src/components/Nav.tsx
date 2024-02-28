@@ -60,17 +60,15 @@ export const Nav = () => {
         <div className="absolute right-5 top-5 hover:cursor-pointer md:hidden" onClick={() => setOpenNav(false)}>
           X
         </div>
-        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer md:pl-0 pl-16">
+        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer md:pl-0 pl-16" onClick={() => navigate("/quizes")}>
           <QuizSVG width={35} height={35} fill="#46230A" />
-          <p className="flex self-center pl-[10px] font-bold text-PrimaryText mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5" onClick={() => navigate("/quizes")}>
-            Quizzes
-          </p>
+          <p className="flex self-center pl-[10px] font-bold text-PrimaryText mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Quizzes</p>
         </div>
-        <div className="flex self-center decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 md:pl-0 pl-16">
+        <div className="flex self-center decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 md:pl-0 pl-16" onClick={() => navigate("/create-quiz")}>
           <AddSVG width={25} height={25} fill="#46230A" />
           <p className=" pl-[10px] font-bold text-PrimaryText hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Create</p>
         </div>
-        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer pl-16 md:pl-0">
+        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer pl-16 md:pl-0" onClick={() => navigate("/leaderboard")}>
           <LeaderboardSVG width={40} height={40} fill="#46230A" />
           <p className="flex self-center font-bold text-PrimaryText  mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Leaderboard</p>
         </div>

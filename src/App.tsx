@@ -14,6 +14,8 @@ import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { UserProfile } from "./pages/UserProfile";
 import { NotificationType, useNotifications } from "./context/NotificationsContext";
+import { CreateQuiz } from "./pages/createQuiz";
+import { Leaderboard } from "./pages/Leaderboard";
 
 function App() {
   const navigate = useNavigate();
@@ -69,6 +71,8 @@ function App() {
           <Route element={<Authguard />}>
             <Route path="/quizes" element={<Quizes />} />
             <Route path="/userProfile" element={<UserProfile />} />
+            <Route path="/create-quiz" element={<CreateQuiz />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
           </Route>
         </Routes>
       </section>
