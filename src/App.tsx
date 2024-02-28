@@ -14,7 +14,7 @@ import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { UserProfile } from "./pages/UserProfile";
 import { NotificationType, useNotifications } from "./context/NotificationsContext";
-import { CreateQuiz } from "./pages/createQuiz";
+import { CreateQuiz } from "./pages/CreateQuiz";
 import { Leaderboard } from "./pages/Leaderboard";
 
 function App() {
