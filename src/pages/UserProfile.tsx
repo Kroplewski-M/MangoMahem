@@ -1,6 +1,7 @@
 import { getAuth, signOut } from "firebase/auth";
 import { useUserInfo } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { UserSvg } from "../assets/SVG/UserSVG";
 
 export const UserProfile = () => {
     const {userInfo,logoutUser} = useUserInfo();
@@ -19,7 +20,12 @@ export const UserProfile = () => {
     return (
         <div className="grid place-content-center">
             <div className="w-[300px] md:w-[500px] rounded h-[350px] bg-secondary mt-16">
-                <p className="font-bold text-[30px] text-PrimaryText text-center mt-5">User Info</p>
+                <div className="flex w-[200px] mx-auto">
+                    <div className="width-[50px] height-[50px] flex self-center">
+                        <UserSvg width={50} height={50} fill="#46230A" />
+                    </div>
+                    <p className="font-bold text-[30px] text-PrimaryText text-center mt-5">User Info</p>
+                </div>
                 <div className="flex flex-col mt-5 md:text-[20px] text-[16px]">
                     <div className="bg-mainBg w-[70%] mx-auto rounded p-2">
                         <p className="font-bold text-PrimaryText text-center">Name: {userInfo.displayName}</p>

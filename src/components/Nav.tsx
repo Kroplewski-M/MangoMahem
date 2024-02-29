@@ -50,9 +50,9 @@ export const Nav = () => {
   };
   return (
     <nav className={`w-[100vw] h-[70px] bg-secondary duration-200 ease-linear flex relative z-[100] sticky top-0 shadow-lg`}>
-      <div className="self-center flex pl-[10px] hover:cursor-pointer">
+      <div className="self-center flex pl-[10px] hover:cursor-pointer" onClick={() => navigate("/")}>
         <LogoSVG width={50} height={50} />
-        <p className="font-bold self-center pl-2 text-PrimaryText" onClick={() => navigate("/")}>
+        <p className="font-bold self-center pl-2 text-PrimaryText">
           Mango Mayhem
         </p>
       </div>
