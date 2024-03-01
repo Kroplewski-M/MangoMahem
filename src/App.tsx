@@ -20,11 +20,12 @@ import { Leaderboard } from "./pages/Leaderboard";
 function App() {
   const navigate = useNavigate();
   const { loginUser } = useUserInfo();
-  const { notifications } = useNotifications();
+  const { notifications,PushNotifictionMessage } = useNotifications();
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        PushNotifictionMessage("Logged in successfully", NotificationType.Success);
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
         const pointsDocRef = doc(db, "userScores", user.uid);
