@@ -17,44 +17,63 @@ export const CreateQuiz = () => {
         { AnswerText: "", IsCorrect: false },
         { AnswerText: "", IsCorrect: false },
         { AnswerText: "", IsCorrect: false },
-        { AnswerText: "", IsCorrect: false },
       ],
     },
   ]);
 
-  const handleQuestionChange = (index:number,event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleQuestionChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuestions = [...questions];
     newQuestions[index].QuestionName = event.target.value;
     setQuestions(newQuestions);
-  }
-  const handleAnswerChange = (questionIndex:number,answerIndex:number,event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(questions);
+  };
+  const handleAnswerChange = (questionIndex: number, answerIndex: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuestions = [...questions];
     newQuestions[questionIndex].Answers[answerIndex].AnswerText = event.target.value;
     setQuestions(newQuestions);
-  }
+  };
   const addQuestion = () => {
-    setQuestions([...questions, { QuestionName: "", Answers: [{ AnswerText: "", IsCorrect: false }] }]);
-  }
-  const addAnswer = (questionIndex:number) => {
+    setQuestions([
+      ...questions,
+      {
+        QuestionName: "",
+        Answers: [
+          { AnswerText: "", IsCorrect: false },
+          { AnswerText: "", IsCorrect: false },
+          { AnswerText: "", IsCorrect: false },
+        ],
+      },
+    ]);
+  };
+  const addAnswer = (questionIndex: number) => {
     const newQuestions = [...questions];
     newQuestions[questionIndex].Answers.push({ AnswerText: "", IsCorrect: false });
     setQuestions(newQuestions);
-  }
-  const removeQuestion = (index:number) => {
+  };
+  const removeQuestion = (index: number) => {
     const newQuestions = [...questions];
     newQuestions.splice(index, 1);
     setQuestions(newQuestions);
-  }
-  const removeAnswer = (questionIndex:number,answerIndex:number) => {
+  };
+  const removeAnswer = (questionIndex: number, answerIndex: number) => {
     const newQuestions = [...questions];
-    newQuestions[questionIndex].Answers.splice(answerIndex, 1);
+    // newQuestions[questionIndex].Answers.splice(answerIndex, 1);
+    // setQuestions(newQuestions);
+    console.log(answerIndex);
+    const updatedAnswers = [...newQuestions[questionIndex].Answers];
+    updatedAnswers.splice(answerIndex, 1);
+
+    newQuestions[questionIndex] = {
+      ...newQuestions[questionIndex],
+      Answers: updatedAnswers,
+    };
     setQuestions(newQuestions);
-  }
-  const SetAnswer = (questionIndex:number,answerIndex:number,IsCorrect:boolean) => {
+  };
+  const SetAnswer = (questionIndex: number, answerIndex: number, IsCorrect: boolean) => {
     const newQuestions = [...questions];
     newQuestions[questionIndex].Answers[answerIndex].IsCorrect = IsCorrect;
     setQuestions(newQuestions);
-  }
+  };
   return (
     <div className="w-[500px] mx-auto rounded bg-secondary pb-5">
       <h1 className="font-bold text-[30px] mt-5 text-center text-PrimaryText">Create Quiz</h1>
@@ -65,9 +84,45 @@ export const CreateQuiz = () => {
         </label>
         <input type="text" className="w-[100%] bg-mainBg rounded-md h-[40px] block ps-[5px] mt-[5px]" placeholder="Mango Quiz" />
       </div>
-      {questions.map(() => (
-        <p>hello</p>
+      {questions.map((question, questionIndex) => (
+        <div className="w-[300px] mx-auto mt-10" key={questionIndex}>
+          <label htmlFor="question" className="font-bold text-PrimaryText">
+            Question {questionIndex + 1}:{" "}
+          </label>
+          <input
+            type="text"
+            name="question"
+            className="w-[300px] block h-[35px] rounded-md pl-[5px] mt-[5px]  bg-mainBg focus:outline-none"
+            placeholder="Which country grows the most mangos?"
+            onChange={(e) => handleQuestionChange(questionIndex, e)}
+          />
+          <p className="font-bold text-PrimaryText mt-5">Answers:</p>
+          {question.Answers.map((answer, answerIndex) => (
+            <div key={answerIndex}>
+              <div className="flex mt-5">
+                <input type="text" name="answer" className="w-[300px] block h-[35px] rounded-md pl-[5px] bg-mainBg focus:outline-none" placeholder={`Answer ${answerIndex + 1}`} />
+                <label htmlFor="correct" className="pl-[5px] text-mainBg">
+                  correct?
+                </label>
+                <input type="checkbox" name="correct" className="w-[20px] h-[20px] rounded-md bg-mainBg ml-5 mt-[5px]" />
+              </div>
+              <p className="text-red-700 hover:cursor-pointer" onClick={() => removeAnswer(questionIndex, answerIndex)}>
+                Delete
+              </p>
+            </div>
+          ))}
+          <div className="w-[100px] h-[35px]  mt-5">
+            <button className="w-[100%] h-[100%] bg-PrimaryText text-gray-300 rounded-md hover:font-bold" onClick={() => addAnswer(questionIndex)}>
+              Add Answer
+            </button>
+          </div>
+        </div>
       ))}
+      <div className="w-[150px] h-[35px]  mt-10 ml-5">
+        <button className="w-[100%] h-[100%] bg-PrimaryText text-gray-300 rounded-md hover:font-bold" onClick={addQuestion}>
+          Add next Question
+        </button>
+      </div>
     </div>
   );
 };
