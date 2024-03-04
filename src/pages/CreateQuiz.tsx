@@ -31,6 +31,7 @@ export const CreateQuiz = () => {
     const newQuestions = [...questions];
     newQuestions[questionIndex].Answers[answerIndex].AnswerText = event.target.value;
     setQuestions(newQuestions);
+    console.log(questions);
   };
   const addQuestion = () => {
     setQuestions([
@@ -69,10 +70,11 @@ export const CreateQuiz = () => {
     };
     setQuestions(newQuestions);
   };
-  const SetAnswer = (questionIndex: number, answerIndex: number, IsCorrect: boolean) => {
+  const SetAnswer = (questionIndex: number, answerIndex: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuestions = [...questions];
-    newQuestions[questionIndex].Answers[answerIndex].IsCorrect = IsCorrect;
+    newQuestions[questionIndex].Answers[answerIndex].IsCorrect = event.target.checked;
     setQuestions(newQuestions);
+    console.log(questions);
   };
   return (
     <div className="w-[500px] mx-auto rounded bg-secondary pb-5">
@@ -100,11 +102,11 @@ export const CreateQuiz = () => {
           {question.Answers.map((answer, answerIndex) => (
             <div key={answerIndex}>
               <div className="flex mt-5">
-                <input type="text" name="answer" className="w-[300px] block h-[35px] rounded-md pl-[5px] bg-mainBg focus:outline-none" placeholder={`Answer ${answerIndex + 1}`} />
+                <input type="text" name="answer" className="w-[300px] block h-[35px] rounded-md pl-[5px] bg-mainBg focus:outline-none" placeholder={`Answer ${answerIndex + 1}`} onChange={(e) => handleAnswerChange(questionIndex,answerIndex,e)} />
                 <label htmlFor="correct" className="pl-[5px] text-mainBg">
                   correct?
                 </label>
-                <input type="checkbox" name="correct" className="w-[20px] h-[20px] rounded-md bg-mainBg ml-5 mt-[5px]" />
+                <input type="checkbox" name="correct" className="w-[20px] h-[20px] rounded-md bg-mainBg ml-5 mt-[5px]" onChange={(event)=>SetAnswer(questionIndex,answerIndex,event)} />
               </div>
               <p className="text-red-700 hover:cursor-pointer" onClick={() => removeAnswer(questionIndex, answerIndex)}>
                 Delete
