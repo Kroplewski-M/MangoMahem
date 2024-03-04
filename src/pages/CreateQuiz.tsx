@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface AnswerInterface {
+  Id: string;
   AnswerText: string;
   IsCorrect: boolean;
 }
 interface QuestionInterface {
+  Id: string;
   QuestionName: string;
   Answers: AnswerInterface[];
 }
@@ -12,11 +14,12 @@ interface QuestionInterface {
 export const CreateQuiz = () => {
   const [questions, setQuestions] = useState<QuestionInterface[]>([
     {
+      Id: crypto.randomUUID(),
       QuestionName: "",
       Answers: [
-        { AnswerText: "", IsCorrect: false },
-        { AnswerText: "", IsCorrect: false },
-        { AnswerText: "", IsCorrect: false },
+        { Id: crypto.randomUUID(), AnswerText: "", IsCorrect: false },
+        { Id: crypto.randomUUID(), AnswerText: "", IsCorrect: false },
+        { Id: crypto.randomUUID(), AnswerText: "", IsCorrect: false },
       ],
     },
   ]);
@@ -37,18 +40,19 @@ export const CreateQuiz = () => {
     setQuestions([
       ...questions,
       {
+        Id: crypto.randomUUID(),
         QuestionName: "",
         Answers: [
-          { AnswerText: "", IsCorrect: false },
-          { AnswerText: "", IsCorrect: false },
-          { AnswerText: "", IsCorrect: false },
+          { Id: crypto.randomUUID(), AnswerText: "", IsCorrect: false },
+          { Id: crypto.randomUUID(), AnswerText: "", IsCorrect: false },
+          { Id: crypto.randomUUID(), AnswerText: "", IsCorrect: false },
         ],
       },
     ]);
   };
   const addAnswer = (questionIndex: number) => {
     const newQuestions = [...questions];
-    newQuestions[questionIndex].Answers.push({ AnswerText: "", IsCorrect: false });
+    newQuestions[questionIndex].Answers.push({ Id: crypto.randomUUID(), AnswerText: "", IsCorrect: false });
     setQuestions(newQuestions);
   };
   const removeQuestion = (index: number) => {
@@ -58,10 +62,7 @@ export const CreateQuiz = () => {
   };
   const removeAnswer = (questionIndex: number, answerIndex: number) => {
     const newQuestions = [...questions];
-    // newQuestions[questionIndex].Answers.splice(answerIndex, 1);
-    // setQuestions(newQuestions);
-    console.log(answerIndex);
-    const updatedAnswers = [...newQuestions[questionIndex].Answers];
+    var updatedAnswers = [...newQuestions[questionIndex].Answers];
     updatedAnswers.splice(answerIndex, 1);
 
     newQuestions[questionIndex] = {
@@ -87,7 +88,10 @@ export const CreateQuiz = () => {
         <input type="text" className="w-[100%] bg-mainBg rounded-md h-[40px] block ps-[5px] mt-[5px]" placeholder="Mango Quiz" />
       </div>
       {questions.map((question, questionIndex) => (
-        <div className="w-[300px] mx-auto mt-10" key={questionIndex}>
+        <div className="w-[300px] mx-auto mt-10" key={question.Id}>
+          <p className="hover:cursor-pointer text-red-500" onClick={() => removeQuestion(questionIndex)}>
+            Delete Question
+          </p>
           <label htmlFor="question" className="font-bold text-PrimaryText">
             Question {questionIndex + 1}:{" "}
           </label>
@@ -100,13 +104,19 @@ export const CreateQuiz = () => {
           />
           <p className="font-bold text-PrimaryText mt-5">Answers:</p>
           {question.Answers.map((answer, answerIndex) => (
-            <div key={answerIndex}>
+            <div key={answer.Id}>
               <div className="flex mt-5">
-                <input type="text" name="answer" className="w-[300px] block h-[35px] rounded-md pl-[5px] bg-mainBg focus:outline-none" placeholder={`Answer ${answerIndex + 1}`} onChange={(e) => handleAnswerChange(questionIndex,answerIndex,e)} />
+                <input
+                  type="text"
+                  name="answer"
+                  className="w-[300px] block h-[35px] rounded-md pl-[5px] bg-mainBg focus:outline-none"
+                  placeholder={`Answer ${answerIndex + 1}`}
+                  onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e)}
+                />
                 <label htmlFor="correct" className="pl-[5px] text-mainBg">
                   correct?
                 </label>
-                <input type="checkbox" name="correct" className="w-[20px] h-[20px] rounded-md bg-mainBg ml-5 mt-[5px]" onChange={(event)=>SetAnswer(questionIndex,answerIndex,event)} />
+                <input type="checkbox" name="correct" className="w-[20px] h-[20px] rounded-md bg-mainBg ml-5 mt-[5px]" onChange={(event) => SetAnswer(questionIndex, answerIndex, event)} />
               </div>
               <p className="text-red-700 hover:cursor-pointer" onClick={() => removeAnswer(questionIndex, answerIndex)}>
                 Delete
