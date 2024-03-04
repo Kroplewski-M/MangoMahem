@@ -7,12 +7,12 @@ interface AddSVGInterface {
 export const AddSVG = ({ width, height, fill }: AddSVGInterface) => {
   return (
     <svg width={width} height={height} viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill={fill}>
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
         {" "}
         <title>plus</title> <desc>Created with Sketch Beta.</desc> <defs> </defs>{" "}
-        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           {" "}
           <g id="Icon-Set-Filled" transform="translate(-362.000000, -1037.000000)" fill={fill}>
             {" "}
