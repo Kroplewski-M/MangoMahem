@@ -14,6 +14,7 @@ interface QuestionInterface {
 export const CreateQuiz = () => {
   const { PushNotifictionMessage } = useNotifications();
 
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [quizName, setQuizName] = useState("");
   const [quizDescription, setQuizDescription] = useState("");
   const [quizImage, setQuizImage] = useState<File | null>(null);
@@ -120,8 +121,9 @@ export const CreateQuiz = () => {
     const file = event.target.files?.[0];
     if (file) {
       setQuizImage(file);
+      const url = URL.createObjectURL(file);
+      setImageUrl(url);
     }
-    console.log(file);
   };
   return (
     <div className="w-[500px] mx-auto rounded bg-secondary pb-5">
@@ -129,6 +131,7 @@ export const CreateQuiz = () => {
 
       <div className="w-[300px] mx-auto mt-5">
         <div>
+          {imageUrl && <img src={imageUrl} alt="quiz" className="w-[100%] h-[200px] object-cover rounded-md" />}
           <label htmlFor="QuizImg" className="font-bold text-PrimaryText">
             Quiz Image:
           </label>
