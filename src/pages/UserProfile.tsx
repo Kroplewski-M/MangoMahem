@@ -2,9 +2,11 @@ import { getAuth, signOut } from "firebase/auth";
 import { useUserInfo } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { UserSvg } from "../assets/SVG/UserSVG";
+import { NotificationType, useNotifications } from "../context/NotificationsContext";
 
 export const UserProfile = () => {
     const {userInfo,logoutUser} = useUserInfo();
+    const {PushNotifictionMessage} = useNotifications();
     const navigate = useNavigate();
 
     const logOut = async() => {
@@ -12,9 +14,10 @@ export const UserProfile = () => {
         try{
             await signOut(auth);
             logoutUser();
+            PushNotifictionMessage("Logged out successfully", NotificationType.Success);
             navigate('/');
         }catch{
-            console.log('Error in signout');
+            PushNotifictionMessage("Error while logging out", NotificationType.Error);
         }
     };
     return (
