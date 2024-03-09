@@ -126,7 +126,7 @@ export const CreateQuiz = () => {
     }
   };
   return (
-    <div className="w-[500px] mx-auto rounded bg-secondary pb-5">
+    <div className="w-[98%] md:w-[500px] mx-auto rounded bg-secondary pb-5">
       <h1 className="font-bold text-[30px] mt-5 text-center text-PrimaryText">Create Quiz</h1>
 
       <div className="w-[300px] mx-auto mt-5">

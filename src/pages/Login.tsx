@@ -42,7 +42,6 @@ export const Login = () => {
           score: pointsDocSnap.data().Score,
         });
       }
-      PushNotifictionMessage("Successfully logged in", NotificationType.Success);
       navigate("/quizes");
     } catch (e) {
       console.error(e);
