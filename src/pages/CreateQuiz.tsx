@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { NotificationType, useNotifications } from "../context/NotificationsContext";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { db, storage } from "../firebase";
+import { v4 as uuidv4 } from "uuid";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+
 interface AnswerInterface {
   Id: string;
   AnswerText: string;
@@ -13,7 +19,7 @@ interface QuestionInterface {
 
 export const CreateQuiz = () => {
   const { PushNotifictionMessage } = useNotifications();
-
+  const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [quizName, setQuizName] = useState("");
   const [quizDescription, setQuizDescription] = useState("");
@@ -115,6 +121,7 @@ export const CreateQuiz = () => {
       quizDescription !== ""
     ) {
       PushNotifictionMessage("Creating Quiz...", NotificationType.Success);
+      addQuizToDatabase();
     }
   };
   const handleQuizImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,6 +131,39 @@ export const CreateQuiz = () => {
       const url = URL.createObjectURL(file);
       setImageUrl(url);
     }
+  };
+  const metadata = {
+    contentType: "image/jpeg",
+  };
+  const [creatingQuiz, setCreatingQuiz] = useState(false);
+  const addQuizToDatabase = async () => {
+    setCreatingQuiz(true);
+    var imgLink = "";
+    try {
+      if (quizImage != null) {
+        const storageRef = ref(storage, uuidv4());
+        const uploadTask = await uploadBytesResumable(storageRef, quizImage, metadata);
+        const downloadUrl = await getDownloadURL(uploadTask.ref);
+        imgLink = downloadUrl;
+      }
+    } catch (e) {
+      PushNotifictionMessage("Error creating quiz...", NotificationType.Error);
+    }
+    try {
+      await setDoc(doc(db, "Quizes", crypto.randomUUID()), {
+        Name: quizName,
+        Description: quizDescription,
+        Image: imgLink,
+        Questions: questions,
+        CreatedAt: new Date().toISOString(),
+      });
+    } catch (e) {
+      PushNotifictionMessage("Error creating quiz...", NotificationType.Error);
+    } finally {
+      setCreatingQuiz(false);
+    }
+    PushNotifictionMessage("Quiz created successfully...", NotificationType.Success);
+    navigate("/quizes");
   };
   return (
     <div className="w-[98%] md:w-[500px] mx-auto rounded bg-secondary pb-5">
@@ -202,7 +242,7 @@ export const CreateQuiz = () => {
         <button className="w-[150px] h-[35px] mr-2 bg-PrimaryText text-gray-300 rounded-md hover:font-bold" onClick={addQuestion}>
           Add Question
         </button>
-        <button className="w-[150px] h-[35px] bg-PrimaryText text-gray-300 rounded-md hover:font-bold" onClick={completeQuiz}>
+        <button className="w-[150px] h-[35px] bg-PrimaryText text-gray-300 rounded-md hover:font-bold" disabled={creatingQuiz} onClick={completeQuiz}>
           Finish Quiz
         </button>
       </div>
