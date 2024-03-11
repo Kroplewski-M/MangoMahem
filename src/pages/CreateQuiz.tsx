@@ -5,6 +5,7 @@ import { db, storage } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { AddSVG } from "../assets/SVG/AddSVG";
 
 interface AnswerInterface {
   Id: string;
@@ -110,6 +111,9 @@ export const CreateQuiz = () => {
     if (quizImage === null) {
       PushNotifictionMessage("Please upload a quiz image", NotificationType.Error);
     }
+    if (categories.length === 0) {
+      PushNotifictionMessage("Please add a category", NotificationType.Error);
+    }
     if (quizDescription === "") {
       PushNotifictionMessage("Please fill out the quiz description field", NotificationType.Error);
     } else if (
@@ -155,6 +159,7 @@ export const CreateQuiz = () => {
         Description: quizDescription,
         Image: imgLink,
         Questions: questions,
+        Categories: categories,
         CreatedAt: new Date().toISOString(),
       });
     } catch (e) {
@@ -165,13 +170,42 @@ export const CreateQuiz = () => {
     PushNotifictionMessage("Quiz created successfully...", NotificationType.Success);
     navigate("/quizes");
   };
+  const [category, setCategory] = useState<string>();
+  const [categories, setCategories] = useState<string[]>([]);
+  const addCategory = () => {
+    if (category) {
+      setCategories([...categories, category]);
+      setCategory("");
+    }
+  };
   return (
     <div className="w-[98%] md:w-[500px] mx-auto rounded bg-secondary pb-5">
       <h1 className="font-bold text-[30px] mt-5 text-center text-PrimaryText">Create Quiz</h1>
 
       <div className="w-[300px] mx-auto mt-5">
+        <div className="flex flex-wrap">
+          {categories.map((category, index) => (
+            <div key={index} className="flex justify-between bg-mainBg p-2 rounded-md mr-[5px] mt-[5px]">
+              <p className="text-PrimaryText">{category}</p>
+              <button className="w-[30px] h-[30px] rounded-md bg-mainBg flex place-content-center pt-[5px]" onClick={() => setCategories(categories.filter((c) => c !== category))}>
+                X
+              </button>
+            </div>
+          ))}
+        </div>
         <div>
-          {imageUrl && <img src={imageUrl} alt="quiz" className="w-[100%] h-[200px] object-cover rounded-md" />}
+          <label htmlFor="categories" className="font-bold text-PrimaryText">
+            Add Categories
+          </label>
+          <div className="flex">
+            <input type="text" className="w-[80%] bg-mainBg rounded-md h-[40px] block ps-[5px] mt-[5px]" placeholder="Fruits" value={category} onChange={(e) => setCategory(e.target.value)} />
+            <button className="w-[30px] h-[30px] rounded-md bg-mainBg flex place-content-center pt-[5px] ml-5 mt-[5px]" onClick={addCategory}>
+              <AddSVG width={20} height={20} fill="#333333" />
+            </button>
+          </div>
+        </div>
+        <div>
+          {imageUrl && <img src={imageUrl} alt="quiz" className="w-[100%] h-[200px] object-cover rounded-md mt-[5px]" />}
           <label htmlFor="QuizImg" className="font-bold text-PrimaryText">
             Quiz Image:
           </label>
