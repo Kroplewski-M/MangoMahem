@@ -1,12 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddSVG } from "../assets/SVG/AddSVG";
 import { SearchSVG } from "../assets/SVG/SearchSVG";
 import { QuizCard } from "../components/QuizCard";
 import { useNavigate } from "react-router-dom";
+import { QuestionInterface } from "./CreateQuiz";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
+export interface QuizInterface{
+  Name:string,
+  Questions:QuestionInterface[]
+  CreatedAt:Date,
+  Description:string,
+  Categories:string[],
+  CreatedBy:string,
+  Image:string
+}
 export const Quizes = () => {
   const navigate = useNavigate();
   const [searchQuizes, setSearchQuizes] = useState<string>("");
+  const [quizes, setQuizes] = useState<QuizInterface[]>([]);
+
+  async function getQuizes() {
+    setQuizes([]);
+    const querySnapshot = await getDocs(collection(db, "Quizes"));
+    querySnapshot.forEach((doc) => {
+      setQuizes([...quizes, doc.data() as QuizInterface]);
+    });
+  }
+
+  useEffect(() => {
+    getQuizes();
+  }, []);
 
   return (
     <div className="md:px-16 pt-5">
@@ -31,21 +56,13 @@ export const Quizes = () => {
       </div>
       <h1 className="font-bold text-[27px] text-PrimaryText mt-5">Quizzes</h1>
       <div className="mt-5 w-[100%] flex flex-wrap flex-col md:flex-row place-content-center md:place-content-start">
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
-        <QuizCard />
+        {
+          quizes.length === 0 ? <p className="font-bold text-PrimaryText text-[20px]">No Quizes Found</p> :""
+        }
+        {quizes.map((quiz, index) => (
+          <QuizCard key={index} QuizInfo={quiz} />
+        ))
+        }
       </div>
     </div>
   );

@@ -6,13 +6,14 @@ import { v4 as uuidv4 } from "uuid";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { AddSVG } from "../assets/SVG/AddSVG";
+import { useUserInfo } from "../context/UserContext";
 
 interface AnswerInterface {
   Id: string;
   AnswerText: string;
   IsCorrect: boolean;
 }
-interface QuestionInterface {
+export interface QuestionInterface {
   Id: string;
   QuestionName: string;
   Answers: AnswerInterface[];
@@ -20,6 +21,7 @@ interface QuestionInterface {
 
 export const CreateQuiz = () => {
   const { PushNotifictionMessage } = useNotifications();
+  const {userInfo} = useUserInfo();
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [quizName, setQuizName] = useState("");
@@ -122,7 +124,8 @@ export const CreateQuiz = () => {
       questions.every((question) => question.Answers.some((answer) => answer.IsCorrect)) &&
       quizName !== "" &&
       quizImage !== null &&
-      quizDescription !== ""
+      quizDescription !== "" &&
+      categories.length > 0
     ) {
       PushNotifictionMessage("Creating Quiz...", NotificationType.Success);
       addQuizToDatabase();
@@ -161,6 +164,7 @@ export const CreateQuiz = () => {
         Questions: questions,
         Categories: categories,
         CreatedAt: new Date().toISOString(),
+        CreatedBy: userInfo.displayName,
       });
     } catch (e) {
       PushNotifictionMessage("Error creating quiz...", NotificationType.Error);
