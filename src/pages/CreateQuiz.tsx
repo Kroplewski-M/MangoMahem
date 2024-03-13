@@ -7,6 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { AddSVG } from "../assets/SVG/AddSVG";
 import { useUserInfo } from "../context/UserContext";
+import { CloseSVG } from "../assets/SVG/CloseSVG";
 
 interface AnswerInterface {
   Id: string;
@@ -190,9 +191,9 @@ export const CreateQuiz = () => {
         <div className="flex flex-wrap">
           {categories.map((category, index) => (
             <div key={index} className="flex justify-between bg-mainBg p-2 rounded-md mr-[5px] mt-[5px]">
-              <p className="text-PrimaryText">{category}</p>
+              <p className="text-PrimaryText font-bold">{category}</p>
               <button className="w-[30px] h-[30px] rounded-md bg-mainBg flex place-content-center pt-[5px]" onClick={() => setCategories(categories.filter((c) => c !== category))}>
-                X
+                <CloseSVG width={20} height={20} fill="#333333" />
               </button>
             </div>
           ))}
@@ -262,7 +263,7 @@ export const CreateQuiz = () => {
                 <label htmlFor="correct" className="pl-[5px] text-mainBg">
                   correct?
                 </label>
-                <input type="checkbox" name="correct" className="w-[20px] h-[20px] rounded-md bg-mainBg ml-5 mt-[5px]" onChange={(event) => SetAnswer(questionIndex, answerIndex, event)} />
+                <input type="checkbox" name="correct" className="w-[25px] h-[25px] rounded-md bg-mainBg ml-5 mt-[5px]" onChange={(event) => SetAnswer(questionIndex, answerIndex, event)} />
               </div>
               <p className="text-red-700 hover:cursor-pointer" onClick={() => removeAnswer(questionIndex, answerIndex)}>
                 Delete

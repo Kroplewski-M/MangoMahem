@@ -4,13 +4,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        secondary: "#FFA466",
+        secondary: "#F69C6A",
         mainBg: "#FFDCB4",
-        PrimaryText: "#46230A",
+        PrimaryText: "#46230B",
         SuccessNotification: "#90ee90",
         ErrorNotification: "#8B0000",
         InfoNotification: "#ADD8E6",
         WarningNotificartion: "#FFA500",
+        ButtonMain: "#F7866A",
       },
     },
   },

@@ -21,7 +21,7 @@ export const Home = () => {
       <div className="relative z-50 mt-5">
         <h1 className="text-[40px] md:text-[55px] text-center font-bold text-PrimaryText">Mango Mayhem</h1>
         <div className="w-[200px] h-[50px] mx-auto mt-5">
-          <button className="w-[100%] h-[100%] border border-[#333333] bg-secondary hover:bg-secondary/70 rounded" onClick={navigateUser}>
+          <button className="w-[100%] h-[100%] border border-[#333333] bg-ButtonMain hover:bg-secondary/70 rounded" onClick={navigateUser}>
             Get Started
           </button>
         </div>

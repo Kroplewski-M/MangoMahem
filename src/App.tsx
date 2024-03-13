@@ -16,6 +16,7 @@ import { UserProfile } from "./pages/UserProfile";
 import { NotificationType, useNotifications } from "./context/NotificationsContext";
 import { CreateQuiz } from "./pages/CreateQuiz";
 import { Leaderboard } from "./pages/Leaderboard";
+import { QuizInfo } from "./pages/QuizInfo";
 
 function App() {
   const navigate = useNavigate();
@@ -74,6 +75,7 @@ function App() {
             <Route path="/userProfile" element={<UserProfile />} />
             <Route path="/create-quiz" element={<CreateQuiz />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/quizInfo/:id" element={<QuizInfo />} />
           </Route>
         </Routes>
       </section>
