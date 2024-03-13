@@ -8,16 +8,15 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { CloseSVG } from "../assets/SVG/CloseSVG";
 
-
-export interface QuizInterface{
-  Id:string,
-  Name:string,
-  Questions:QuestionInterface[]
-  CreatedAt:Date,
-  Description:string,
-  Categories:string[],
-  CreatedBy:string,
-  Image:string
+export interface QuizInterface {
+  Id: string;
+  Name: string;
+  Questions: QuestionInterface[];
+  CreatedAt: Date;
+  Description: string;
+  Categories: string[];
+  CreatedBy: string;
+  Image: string;
 }
 export const Quizes = () => {
   const navigate = useNavigate();
@@ -44,7 +43,7 @@ export const Quizes = () => {
 
   useEffect(() => {
     setFilteredQuizes(quizes.filter((quiz) => quiz.Name.toLowerCase().includes(searchQuizes.toLowerCase())));
-    if(searchQuizes == ""){
+    if (searchQuizes == "") {
       setFilteredQuizes(quizes);
     }
   }, [searchQuizes]);
@@ -57,8 +56,14 @@ export const Quizes = () => {
             <SearchSVG width={30} height={30} fill="#FFA466" />
           </div>
           <div className="flex">
-            <input type="text" className="w-[300px] h-[40px] ml-[5px] text-gray-200 font-bold rounded-md pl-[5px] bg-transparent focus:outline-none" placeholder="Search for a quiz" value={searchQuizes} onChange={(e)=>setSearchQuizes(e.target.value)} />
-            <div className={`w-[20px] h-[20px] rounded-full bg-red-700 hover:cursor-pointer ml-[5px] mt-[7px] ${searchQuizes==""?"hidden":""}`} onClick={()=>setSearchQuizes("")}>
+            <input
+              type="text"
+              className="w-[300px] h-[40px] ml-[5px] text-gray-200 font-bold rounded-md pl-[5px] bg-transparent focus:outline-none"
+              placeholder="Search for a quiz"
+              value={searchQuizes}
+              onChange={(e) => setSearchQuizes(e.target.value)}
+            />
+            <div className={`w-[20px] h-[20px] rounded-full bg-red-700 hover:cursor-pointer ml-[5px] mt-[7px] ${searchQuizes == "" ? "hidden" : ""}`} onClick={() => setSearchQuizes("")}>
               <CloseSVG width={20} height={20} fill="#FFFFFF" />
             </div>
           </div>
@@ -72,15 +77,16 @@ export const Quizes = () => {
       </div>
       <h1 className="font-bold text-[27px] text-PrimaryText mt-5">Quizzes</h1>
       <div className="mt-5 w-[100%] flex flex-wrap flex-col md:flex-row place-content-center md:place-content-start">
-        {
-          !hasLoaded ? <p className="font-bold text-PrimaryText text-[20px]">Loading...</p> : <div>{filteredQuizes.length == 0 ? <p className="font-bold text-PrimaryText text-[20px]">No Quizes Found</p> : ""}</div>
-        }
+        {!hasLoaded ? (
+          <p className="font-bold text-PrimaryText text-[20px]">Loading...</p>
+        ) : (
+          <div>{filteredQuizes.length == 0 ? <p className="font-bold text-PrimaryText text-[20px]">No Quizes Found</p> : ""}</div>
+        )}
         {filteredQuizes.map((quiz, index) => (
-          <div key={index} onClick={()=>navigate(`/quizInfo/${quiz.Id}`)} >
+          <div key={index} onClick={() => navigate(`/quizInfo/${quiz.Id}`)}>
             <QuizCard QuizInfo={quiz} />
           </div>
-        ))
-        }
+        ))}
       </div>
     </div>
   );
