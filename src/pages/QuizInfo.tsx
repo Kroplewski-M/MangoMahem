@@ -29,11 +29,31 @@ export const QuizInfo = () => {
     }
   }
   return (
-    <div>
-      <h1>Quiz Info</h1>
-      <p>{id}</p>
-      <p>{maxQuestions}</p>
-      <p>{quizInfo?.Name}</p>
+    <div className="md:w-[400px] w-[90%] mx-auto min-h-[400px] pb-5 rounded-md bg-secondary mt-16">
+      {!startQuiz ? (
+        <>
+          <p className="font-bold text-PrimaryText text-[25px] text-center">{quizInfo?.Name}</p>
+          <div className="w-[80%] flex place-content-around mx-auto mt-[10px]">
+            <p className="text-[12px]">Created:{quizInfo?.CreatedAt.toString().substring(0, 10)}</p>
+            <p className="text-[12px]">By:{quizInfo?.CreatedBy}</p>
+          </div>
+          <div className="w-[250px] h-[200px] mx-auto mt-[10px]">
+            <img src={quizInfo?.Image} alt={quizInfo?.Name} className="w-[100%] h-[100%] rounded-md" />
+          </div>
+          <div className="w-[80%] mx-auto mt-[20px]">
+            <p className="text-primaryText">
+              <span className="font-bold">Quiz Description:</span> <br /> {quizInfo?.Description}
+            </p>
+          </div>
+          <div className="w-[80%] mx-auto mt-5 h-[30px]">
+            <button onClick={() => setStartQuiz(true)} className="w-[100px] h-[100%] rounded-md bg-PrimaryText hover:bg-PrimaryText/70 text-gray-100">
+              Start Quiz
+            </button>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
