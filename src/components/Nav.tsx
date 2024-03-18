@@ -15,12 +15,15 @@ export const Nav = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useUserInfo();
   const { userInfo } = useUserInfo();
+  var userScore = userInfo.score;
 
   function getWindowSize() {
     const innerWidth: number = window.innerWidth;
     return innerWidth;
   }
-
+  useEffect(() => {
+    userScore = userInfo.score;
+  }, [userInfo.score]);
   useEffect(() => {
     function handleWindowResize() {
       setWindowSize(getWindowSize());
@@ -52,9 +55,7 @@ export const Nav = () => {
     <nav className={`w-[100vw] h-[70px] bg-secondary duration-200 ease-linear flex relative z-[100] sticky top-0 shadow-lg`}>
       <div className="self-center flex pl-[10px] hover:cursor-pointer" onClick={() => navigate("/")}>
         <LogoSVG width={50} height={50} />
-        <p className="font-bold self-center pl-2 text-PrimaryText">
-          Mango Mayhem
-        </p>
+        <p className="font-bold self-center pl-2 text-PrimaryText">Mango Mayhem</p>
       </div>
       <div className={`flex-row ${openNav ? "fixed top-0 right-0 bg-secondary w-[90%] h-[100vh] text-center pt-10 animate-SlideIn" : "hidden"} md:inline-flex self-center w-[380px] mx-auto`}>
         <div className="absolute right-5 top-5 hover:cursor-pointer md:hidden" onClick={() => setOpenNav(false)}>
@@ -75,7 +76,7 @@ export const Nav = () => {
         <div className="md:absolute top-3 right-10 flex place-content-center">
           <div className={`flex mt-[3px] ${isLoggedIn() ? "" : "hidden"}`}>
             <LogoSVG width={30} height={30} />
-            <p className="text-PrimaryText font-bold">{userInfo.score}</p>
+            <p className="text-PrimaryText font-bold">{userScore}</p>
           </div>
           <div className="hover:cursor-pointer ml-[15px]" onClick={navigateUser}>
             <UserSvg width={35} height={35} fill="#46230A" />

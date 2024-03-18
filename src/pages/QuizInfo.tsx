@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { QuizInterface } from "./Quizes";
 import { NotificationType, useNotifications } from "../context/NotificationsContext";
+import { useUserInfo } from "../context/UserContext";
 
 export const QuizInfo = () => {
   const { id } = useParams();
+  const { userInfo, updateUserScore } = useUserInfo();
   const [quizInfo, setQuizInfo] = useState<QuizInterface | null>(null);
   const [startQuiz, setStartQuiz] = useState<boolean>(false);
   const [isQuizOver, setIsQuizOver] = useState<boolean>(false);
@@ -48,6 +50,9 @@ export const QuizInfo = () => {
         setIsQuizOver(true);
         setCurrentQuestion(0);
         setStartQuiz(false);
+        setTimeout(() => {
+          submitQuiz();
+        }, 1000);
       } else {
         setCurrentQuestion(currentQuestion + 1);
       }
@@ -55,6 +60,18 @@ export const QuizInfo = () => {
       PushNotifictionMessage("Please select an answer", NotificationType.Error);
     }
   }
+  const submitQuiz = async () => {
+    const newScore = Number(userInfo.score) + userScore * 10;
+    console.log(newScore);
+    updateUserScore(newScore);
+    try {
+      await setDoc(doc(db, "userScores", userInfo.uid), {
+        Score: newScore,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <div className="md:w-[500px] w-[90%] mx-auto min-h-[400px] pb-5 rounded-md bg-secondary mt-16">
       {!startQuiz ? (

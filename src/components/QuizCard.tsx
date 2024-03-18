@@ -22,7 +22,7 @@ export const QuizCard = ({ QuizInfo }: QuizCardInterface) => {
             </div>
           ))}
         </div>
-        <h1 className="font-bold text-[20px] text-center text-PrimaryText">{QuizInfo.Name}</h1>
+        <h1 className="font-bold text-[20px] text-center text-PrimaryText pt-[10px]">{QuizInfo.Name}</h1>
         <div className="flex absolute bottom-5 left-0 place-content-around w-[100%] text-PrimaryText">
           <p className="text-[10px]">created: {QuizInfo.CreatedAt.toString().substring(0, 10)}</p>
           <p className="text-[10px]">by: {QuizInfo.CreatedBy}</p>

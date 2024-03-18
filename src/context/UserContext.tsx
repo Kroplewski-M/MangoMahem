@@ -11,6 +11,7 @@ interface UserProvider {
   loginUser: (info: userProps) => void;
   logoutUser: () => void;
   isLoggedIn: () => boolean;
+  updateUserScore: (newScore: number) => void;
 }
 interface userProviderProps {
   children: ReactNode;
@@ -21,18 +22,18 @@ export const useUserInfo = () => {
   return useContext(UserProvider);
 };
 export const UserContext = ({ children }: userProviderProps) => {
-  const [userInfo, setUserInfo] = useState<userProps>({ uid: "", email: "", displayName: "",score:0 });
+  const [userInfo, setUserInfo] = useState<userProps>({ uid: "", email: "", displayName: "", score: 0 });
 
   const loginUser = (info: userProps) => {
     setUserInfo({
       uid: info.uid,
       email: info.email,
       displayName: info.displayName,
-      score:info.score
+      score: info.score,
     });
   };
   const logoutUser = () => {
-    setUserInfo({ uid: "", email: "", displayName: "",score:0 });
+    setUserInfo({ uid: "", email: "", displayName: "", score: 0 });
   };
   const isLoggedIn = () => {
     if (userInfo.uid != "") {
@@ -40,6 +41,14 @@ export const UserContext = ({ children }: userProviderProps) => {
     }
     return false;
   };
+  const updateUserScore = (newScore: number) => {
+    setUserInfo({
+      uid: userInfo.uid,
+      email: userInfo.email,
+      displayName: userInfo.displayName,
+      score: newScore,
+    });
+  };
 
-  return <UserProvider.Provider value={{ loginUser, logoutUser, userInfo, isLoggedIn }}>{children}</UserProvider.Provider>;
+  return <UserProvider.Provider value={{ loginUser, logoutUser, userInfo, isLoggedIn, updateUserScore }}>{children}</UserProvider.Provider>;
 };
