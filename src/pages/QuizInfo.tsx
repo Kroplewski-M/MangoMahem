@@ -3,19 +3,25 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { QuizInterface } from "./Quizes";
+import { NotificationType, useNotifications } from "../context/NotificationsContext";
 
 export const QuizInfo = () => {
   const { id } = useParams();
   const [quizInfo, setQuizInfo] = useState<QuizInterface | null>(null);
   const [startQuiz, setStartQuiz] = useState<boolean>(false);
+  const [isQuizOver, setIsQuizOver] = useState<boolean>(false);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [maxQuestions, setMaxQuestions] = useState<number>(0);
   const [userScore, setUserScore] = useState<number>(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const { PushNotifictionMessage } = useNotifications();
 
   useEffect(() => {
     getQuizInfo();
   }, []);
-
+  useEffect(() => {
+    console.log(userScore);
+  }, [userScore]);
   async function getQuizInfo() {
     if (id) {
       const docRef = doc(db, "Quizes", id);
@@ -24,14 +30,35 @@ export const QuizInfo = () => {
         {
           setQuizInfo(docSnap.data() as QuizInterface);
           setMaxQuestions(docSnap.data()?.Questions.length);
+          setSelectedAnswers(Array(docSnap.data()?.Questions.length).fill(""));
         }
       }
+    }
+  }
+  function NextQuestion() {
+    quizInfo?.Questions[currentQuestion].Answers.forEach((answer) => {
+      if (answer.AnswerText === selectedAnswers[currentQuestion]) {
+        if (answer.IsCorrect) {
+          setUserScore(userScore + 1);
+        }
+      }
+    });
+    if (selectedAnswers[currentQuestion] !== "") {
+      if (currentQuestion + 1 === maxQuestions) {
+        setIsQuizOver(true);
+        setCurrentQuestion(0);
+        setStartQuiz(false);
+      } else {
+        setCurrentQuestion(currentQuestion + 1);
+      }
+    } else {
+      PushNotifictionMessage("Please select an answer", NotificationType.Error);
     }
   }
   return (
     <div className="md:w-[500px] w-[90%] mx-auto min-h-[400px] pb-5 rounded-md bg-secondary mt-16">
       {!startQuiz ? (
-        <>
+        <div className={`${isQuizOver ? "hidden" : ""}`}>
           <p className="font-bold text-PrimaryText text-[25px] text-center">{quizInfo?.Name}</p>
           <div className="w-[80%] flex place-content-between mx-auto mt-[10px]">
             <p className="text-[12px]">Created:{quizInfo?.CreatedAt.toString().substring(0, 10)}</p>
@@ -50,7 +77,7 @@ export const QuizInfo = () => {
               Start Quiz
             </button>
           </div>
-        </>
+        </div>
       ) : (
         <>
           <div className="w-[100%] h-[70px] rounded-t-md bg-PrimaryText">
@@ -58,20 +85,43 @@ export const QuizInfo = () => {
               Question {currentQuestion + 1} out of {quizInfo?.Questions.length}
             </p>
           </div>
-          <p className="text-center text-[20px] pt-5 font-bold">{quizInfo?.Questions[currentQuestion].QuestionName} ?</p>
+          <p className="text-center text-[20px] pt-5 font-bold">{quizInfo?.Questions[currentQuestion].QuestionName}</p>
           <div className="mt-5">
             {quizInfo?.Questions[currentQuestion].Answers.map((answer, index) => (
-              <div key={index} className="w-[90%] mx-auto h-[50px] bg-mainBg hover:cursor-pointer grid place-content-center rounded-md mt-[10px] hover:border-2 border-PrimaryText">
+              <div
+                key={index}
+                className={`w-[90%] mx-auto h-[50px] bg-mainBg hover:cursor-pointer grid place-content-center rounded-md mt-[10px] hover:border-2 border-PrimaryText ${
+                  selectedAnswers[currentQuestion] == answer.AnswerText ? "border border-4 border-green-600" : ""
+                }`}
+                onClick={() => {
+                  setSelectedAnswers((prevAnswers) => {
+                    const newAnswers = [...prevAnswers];
+                    newAnswers[currentQuestion] = answer.AnswerText;
+                    return newAnswers;
+                  });
+                }}
+              >
                 <p className="">{answer.AnswerText}</p>
               </div>
             ))}
           </div>
           <div className="w-[120px] h-[40px] mx-auto mt-5">
-            <button className="w-[100%] h-[100%] bg-PrimaryText rounded-md text-gray-200" onClick={() => setCurrentQuestion(currentQuestion + 1)}>
-              next question
+            <button className="w-[100%] h-[100%] bg-PrimaryText rounded-md text-gray-200" onClick={NextQuestion}>
+              {currentQuestion === maxQuestions - 1 ? "Finish quiz" : "Next question"}
             </button>
           </div>
         </>
+      )}
+      {isQuizOver ? (
+        <div>
+          <p className="text-center font-bold text-[25px] text-PrimaryText pt-5">Quiz Complete</p>
+          <p className="text-center font-bold text-[20px] text-PrimaryText">
+            Your Score: {userScore} out of {quizInfo?.Questions.length}
+          </p>
+          <p className="text-center font-bold text-[20px] text-PrimaryText">Gained Mangos: {userScore * 10}</p>
+        </div>
+      ) : (
+        <></>
       )}
     </div>
   );
