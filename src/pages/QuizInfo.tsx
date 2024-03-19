@@ -7,6 +7,7 @@ import { NotificationType, useNotifications } from "../context/NotificationsCont
 import { useUserInfo } from "../context/UserContext";
 import { useCompletedQuizes } from "../context/CompletedQuizesContext";
 import { TickSVG } from "../assets/SVG/TickSVG";
+import { DeleteQuiz } from "../components/DeleteQuiz";
 
 export const QuizInfo = () => {
   const { id } = useParams();
@@ -92,6 +93,10 @@ export const QuizInfo = () => {
       {!startQuiz ? (
         <div className={`${isQuizOver ? "hidden" : ""}`}>
           <p className="font-bold text-PrimaryText text-[25px] text-center">{quizInfo?.Name}</p>
+          {
+            quizInfo?.UserId!==undefined?<><DeleteQuiz quizUserId={quizInfo?.UserId} userId={userInfo.uid} /></>:<></>
+          }
+          
           <div className="w-[80%] flex place-content-between mx-auto mt-[10px]">
             <p className="text-[12px]">Created:{quizInfo?.CreatedAt.toString().substring(0, 10)}</p>
             <p className="text-[12px]">By:{quizInfo?.CreatedBy}</p>

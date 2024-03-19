@@ -166,6 +166,7 @@ export const CreateQuiz = () => {
         Categories: categories,
         CreatedAt: new Date().toISOString(),
         CreatedBy: userInfo.displayName,
+        UserId: userInfo.uid,
       });
     } catch (e) {
       PushNotifictionMessage("Error creating quiz...", NotificationType.Error);

@@ -16,6 +16,7 @@ export interface QuizInterface {
   Description: string;
   Categories: string[];
   CreatedBy: string;
+  UserId: string;
   Image: string;
 }
 export const Quizes = () => {
@@ -24,7 +25,7 @@ export const Quizes = () => {
   const [quizes, setQuizes] = useState<QuizInterface[]>([]);
   const [filteredQuizes, setFilteredQuizes] = useState<QuizInterface[]>([]);
   const [hasLoaded, setHasLoaded] = useState<boolean>(false);
-
+  
   async function getQuizes() {
     setQuizes([]);
     const querySnapshot = await getDocs(collection(db, "Quizes"));
