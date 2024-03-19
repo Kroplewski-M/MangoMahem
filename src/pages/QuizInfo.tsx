@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { QuizInterface } from "./Quizes";
 import { NotificationType, useNotifications } from "../context/NotificationsContext";
 import { useUserInfo } from "../context/UserContext";
+import { useCompletedQuizes } from "../context/CompletedQuizesContext";
+import { TickSVG } from "../assets/SVG/TickSVG";
 
 export const QuizInfo = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { userInfo, updateUserScore } = useUserInfo();
   const [quizInfo, setQuizInfo] = useState<QuizInterface | null>(null);
   const [startQuiz, setStartQuiz] = useState<boolean>(false);
@@ -17,6 +20,7 @@ export const QuizInfo = () => {
   const [userScore, setUserScore] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const { PushNotifictionMessage } = useNotifications();
+  const {addCompletedQuiz,completedQuizes} = useCompletedQuizes();
 
   useEffect(() => {
     getQuizInfo();
@@ -61,15 +65,26 @@ export const QuizInfo = () => {
     }
   }
   const submitQuiz = async () => {
-    const newScore = Number(userInfo.score) + userScore * 10;
-    console.log(newScore);
-    updateUserScore(newScore);
-    try {
-      await setDoc(doc(db, "userScores", userInfo.uid), {
-        Score: newScore,
-      });
-    } catch (e) {
-      console.error(e);
+    if(id){
+      if(!completedQuizes.includes(id)){
+        const newScore = Number(userInfo.score) + userScore * 10;
+    
+        updateUserScore(newScore);
+        try {
+          await setDoc(doc(db, "userScores", userInfo.uid), {
+            Score: newScore,
+          });
+        } catch (e) {
+          console.error(e);
+        }
+        try{
+            addCompletedQuiz(userInfo.uid,id);
+        }catch(e){
+          console.log(e);
+        }
+      }else{
+        PushNotifictionMessage("You have already completed this quiz, you wont get any extra points!", NotificationType.Error);
+      }
     }
   };
   return (
@@ -131,11 +146,17 @@ export const QuizInfo = () => {
       )}
       {isQuizOver ? (
         <div>
-          <p className="text-center font-bold text-[25px] text-PrimaryText pt-5">Quiz Complete</p>
+          <p className="text-center font-bold text-[35px] text-PrimaryText pt-5">Quiz Complete</p>
+          <p className="text-center font-bold text-[20px] text-PrimaryText pt-5">Congratulations!</p>
+          <div className="w-[170px] h-[170px] mx-auto rounded-full bg-gray-100 grid place-content-center mt-5 mb-5">
+            <TickSVG width={150} height={150} fill="#00873E" />
+          </div>
           <p className="text-center font-bold text-[20px] text-PrimaryText">
             Your Score: {userScore} out of {quizInfo?.Questions.length}
           </p>
-          <p className="text-center font-bold text-[20px] text-PrimaryText">Gained Mangos: {userScore * 10}</p>
+          <div className="w-[150px] h-[35px] mx-auto mt-5">
+            <button onClick={()=>navigate("/quizes")} className="w-[100%] h-[100%] rounded-md bg-PrimaryText text-gray-100 hover:bg-PrimaryText/80 font-bold">Back to quizzes</button>
+          </div>
         </div>
       ) : (
         <></>

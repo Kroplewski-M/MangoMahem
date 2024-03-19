@@ -17,10 +17,12 @@ import { NotificationType, useNotifications } from "./context/NotificationsConte
 import { CreateQuiz } from "./pages/CreateQuiz";
 import { Leaderboard } from "./pages/Leaderboard";
 import { QuizInfo } from "./pages/QuizInfo";
+import { useCompletedQuizes } from "./context/CompletedQuizesContext";
 
 function App() {
   const navigate = useNavigate();
   const { loginUser } = useUserInfo();
+  const {fetchCompletedQuizes} = useCompletedQuizes();
   const { notifications,PushNotifictionMessage } = useNotifications();
 
   useEffect(() => {
@@ -32,6 +34,7 @@ function App() {
         const pointsDocRef = doc(db, "userScores", user.uid);
         const pointsDocSnap = await getDoc(pointsDocRef);
 
+        //fetch user data
         if (userDocSnap.exists() && pointsDocSnap.exists()) {
           loginUser({
             uid: user.uid,
@@ -40,6 +43,8 @@ function App() {
             score: pointsDocSnap.data().Score,
           });
         }
+        //fetch completed quizes
+        fetchCompletedQuizes(user.uid);
         navigate("/quizes");
       }
     });
