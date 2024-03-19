@@ -101,7 +101,7 @@ export const QuizInfo = () => {
             <p className="text-[12px]">Created:{quizInfo?.CreatedAt.toString().substring(0, 10)}</p>
             <p className="text-[12px]">By:{quizInfo?.CreatedBy}</p>
           </div>
-          <div className="w-[350px] h-[300px] mx-auto mt-[10px]">
+          <div className="md:w-[350px] w-[90%] md:h-[300px] h-[200px] mx-auto mt-[10px]">
             <img src={quizInfo?.Image} alt={quizInfo?.Name} className="w-[100%] h-[100%] rounded-md" />
           </div>
           <div className="w-[80%] mx-auto mt-[20px]">
@@ -122,7 +122,7 @@ export const QuizInfo = () => {
               Question {currentQuestion + 1} out of {quizInfo?.Questions.length}
             </p>
           </div>
-          <p className="text-center text-[20px] pt-5 font-bold">{quizInfo?.Questions[currentQuestion].QuestionName}</p>
+          <p className="text-center text-[20px] pt-5 font-bold w-[90%] mx-auto">{quizInfo?.Questions[currentQuestion].QuestionName}</p>
           <div className="mt-5">
             {quizInfo?.Questions[currentQuestion].Answers.map((answer, index) => (
               <div

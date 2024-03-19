@@ -7,6 +7,8 @@ import { QuestionInterface } from "./CreateQuiz";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { CloseSVG } from "../assets/SVG/CloseSVG";
+import { useUserInfo } from "../context/UserContext";
+import { useCompletedQuizes } from "../context/CompletedQuizesContext";
 
 export interface QuizInterface {
   Id: string;
@@ -21,6 +23,8 @@ export interface QuizInterface {
 }
 export const Quizes = () => {
   const navigate = useNavigate();
+  const {userInfo} = useUserInfo();
+  const {completedQuizes} = useCompletedQuizes();
   const [searchQuizes, setSearchQuizes] = useState<string>("");
   const [quizes, setQuizes] = useState<QuizInterface[]>([]);
   const [filteredQuizes, setFilteredQuizes] = useState<QuizInterface[]>([]);
@@ -48,18 +52,29 @@ export const Quizes = () => {
       setFilteredQuizes(quizes);
     }
   }, [searchQuizes]);
-
+  const [FilterQuiz, setFilterQuiz] = useState<string>("All");
+  useEffect(()=>{
+    if(FilterQuiz == "Your"){
+      setFilteredQuizes(quizes.filter((quiz) => quiz.UserId == userInfo.uid));
+    }
+    else if(FilterQuiz == "Completed"){
+      setFilteredQuizes(quizes.filter((quiz) => completedQuizes.includes(quiz.Id)));
+    }
+    else{
+      setFilteredQuizes(quizes);
+    }
+  },[FilterQuiz])
   return (
     <div className="md:px-16 pt-5">
       <div className="flex flex-col md:flex-row">
-        <div className="flex rounded bg-PrimaryText w-[340px] pl-[5px] ml-[3px] md:ml-0">
+        <div className="flex rounded bg-PrimaryText md:w-[340px] w-[90%] pl-[5px] ml-[3px] md:ml-0">
           <div className="w-[30px] height-[30px] flex self-center">
             <SearchSVG width={30} height={30} fill="#FFA466" />
           </div>
           <div className="flex">
             <input
               type="text"
-              className="w-[300px] h-[40px] ml-[5px] text-gray-200 font-bold rounded-md pl-[5px] bg-transparent focus:outline-none"
+              className="md:w-[300px] w-[80%] h-[40px] ml-[5px] text-gray-200 font-bold rounded-md pl-[5px] bg-transparent focus:outline-none"
               placeholder="Search for a quiz"
               value={searchQuizes}
               onChange={(e) => setSearchQuizes(e.target.value)}
@@ -75,6 +90,14 @@ export const Quizes = () => {
             <span className="pl-[5px] font-bold text-PrimaryText"> Create A Quiz </span>
           </button>
         </div>
+      </div>
+      <div>
+        <label htmlFor="Filter" className="font-bold text-PrimaryText text-[20px] mr-[10px] block md:inline mt-5 md:mt-0">Filter:</label>
+        <select name="Filter" className="w-[200px] h-[30px] md:mt-5 bg-PrimaryText rounded-md text-gray-100 font-bold pl-[10px]" onChange={(e)=>setFilterQuiz(e.target.value)}>
+          <option value="All" selected>All Quizzes</option>
+          <option value="Your">Your Quizzes</option>
+          <option value="Completed">Completed Quizzes</option>
+        </select>
       </div>
       <h1 className="font-bold text-[27px] text-PrimaryText mt-5">Quizzes</h1>
       <div className="mt-5 w-[100%] flex flex-wrap flex-col md:flex-row place-content-center md:place-content-start">

@@ -21,8 +21,7 @@ export const useCompletedQuizes = () => {
 
 export const CompletedQuizesContext = ({ children }: CompletedQuizesProviderProps) => {
     const [completedQuizes, setCompletedQuizes] = useState<string[]>([]);
-
-    useEffect(() => {console.log(completedQuizes)}, [completedQuizes]);
+    
     const addCompletedQuiz = async (userId:string,quizId: string) => {
         //Update the database
         try{
@@ -32,8 +31,7 @@ export const CompletedQuizesContext = ({ children }: CompletedQuizesProviderProp
         }catch(e){
             console.log(e);
         }
-        //Update the state
-        setCompletedQuizes([...completedQuizes, quizId]);
+        setCompletedQuizes(prevCompletedQuizes => [...prevCompletedQuizes, quizId]);
     }
 
     const fetchCompletedQuizes = async (userId:string) => {

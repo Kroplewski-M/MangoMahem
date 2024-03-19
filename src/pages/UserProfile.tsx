@@ -3,9 +3,11 @@ import { useUserInfo } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { UserSvg } from "../assets/SVG/UserSVG";
 import { NotificationType, useNotifications } from "../context/NotificationsContext";
+import { useCompletedQuizes } from "../context/CompletedQuizesContext";
 
 export const UserProfile = () => {
     const {userInfo,logoutUser} = useUserInfo();
+    const {removeCompletedQuizes } = useCompletedQuizes();
     const {PushNotifictionMessage} = useNotifications();
     const navigate = useNavigate();
 
@@ -14,6 +16,7 @@ export const UserProfile = () => {
         try{
             await signOut(auth);
             logoutUser();
+            removeCompletedQuizes();
             PushNotifictionMessage("Logged out successfully", NotificationType.Success);
             navigate('/');
         }catch{
