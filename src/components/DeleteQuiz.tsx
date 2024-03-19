@@ -15,7 +15,11 @@ export const DeleteQuiz = ({quizUserId,userId}:DeleteQuizProps) => {
     const deleteQuiz = async()  => {
         //Delete the quiz from the database
         //Delete the quiz from the state
+        if(isCreator){
+            console.log("");
+        }
     }
+    deleteQuiz();
     return (
         <div className="w-[140px] mx-auto mt-[10px] mb-[10px]">
             <button className="w-[140px] h-[30px] rounded-md text-gray-200 font-bold hover:bg-red-700/80 bg-red-700">Delete Quiz</button>
