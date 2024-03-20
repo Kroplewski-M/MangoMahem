@@ -94,7 +94,7 @@ export const QuizInfo = () => {
         <div className={`${isQuizOver ? "hidden" : ""}`}>
           <p className="font-bold text-PrimaryText text-[25px] text-center">{quizInfo?.Name}</p>
           {
-            quizInfo?.UserId!==undefined?<><DeleteQuiz quizUserId={quizInfo?.UserId} userId={userInfo.uid} /></>:<></>
+            quizInfo?.UserId!==undefined?<><DeleteQuiz quizUserId={quizInfo?.UserId} userId={userInfo.uid} image={quizInfo?.Image} quizId={id?id:""}/></>:<></>
           }
           
           <div className="w-[80%] flex place-content-between mx-auto mt-[10px]">
