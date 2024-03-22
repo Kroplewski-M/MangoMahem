@@ -39,7 +39,7 @@ export const Register = () => {
         Email: data.Email,
       });
       await setDoc(doc(db, "userScores", user.user.uid), {
-        UID: user.user.uid,
+        DisplayName: `${data.FirstName} ${data.LastName}`,
         Score: 0,
       });
       setLoading(false);

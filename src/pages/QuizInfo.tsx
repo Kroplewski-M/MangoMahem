@@ -74,6 +74,7 @@ export const QuizInfo = () => {
         try {
           await setDoc(doc(db, "userScores", userInfo.uid), {
             Score: newScore,
+            DisplayName: userInfo.displayName,
           });
         } catch (e) {
           console.error(e);
