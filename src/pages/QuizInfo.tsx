@@ -46,7 +46,7 @@ export const QuizInfo = () => {
     quizInfo?.Questions[currentQuestion].Answers.forEach((answer) => {
       if (answer.AnswerText === selectedAnswers[currentQuestion]) {
         if (answer.IsCorrect) {
-          setUserScore(userScore + 1);
+          setUserScore(prevScore => prevScore + 1);
         }
       }
     });
@@ -68,7 +68,7 @@ export const QuizInfo = () => {
   const submitQuiz = async () => {
     if(id){
       if(!completedQuizes.includes(id)){
-        const newScore = Number(userInfo.score) + userScore * 10;
+        const newScore = ((userScore+1) * 10) + Number(userInfo.score);
     
         updateUserScore(newScore);
         try {

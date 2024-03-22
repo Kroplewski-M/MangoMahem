@@ -14,11 +14,14 @@ export const Leaderboard = () => {
   useEffect(() => {console.log(playerScores)}, [playerScores]);
   const fetchLeaderboard = async () => {
     const querySnapshot = await getDocs(collection(db, "userScores"));
+    const scoresData: PlayerScore[] = [];
     querySnapshot.forEach((doc) => {
       const scoreData = doc.data() as PlayerScore;
       const scoreWithId = { ...scoreData, Id: doc.id };
-      setPlayerScores((prevQuizes) => [...prevQuizes, scoreWithId]);
+      scoresData.push(scoreWithId);
     });
+    scoresData.sort((a, b) => b.Score - a.Score);
+    setPlayerScores(scoresData);
   }
   useEffect(() => {
     fetchLeaderboard();
