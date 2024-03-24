@@ -21,7 +21,7 @@ export const QuizInfo = () => {
   const [userScore, setUserScore] = useState<number>(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const { PushNotifictionMessage } = useNotifications();
-  const {addCompletedQuiz,completedQuizes} = useCompletedQuizes();
+  const { addCompletedQuiz, completedQuizes } = useCompletedQuizes();
 
   useEffect(() => {
     getQuizInfo();
@@ -46,7 +46,7 @@ export const QuizInfo = () => {
     quizInfo?.Questions[currentQuestion].Answers.forEach((answer) => {
       if (answer.AnswerText === selectedAnswers[currentQuestion]) {
         if (answer.IsCorrect) {
-          setUserScore(prevScore => prevScore + 1);
+          setUserScore((prevScore) => prevScore + 1);
         }
       }
     });
@@ -66,10 +66,10 @@ export const QuizInfo = () => {
     }
   }
   const submitQuiz = async () => {
-    if(id){
-      if(!completedQuizes.includes(id)){
-        const newScore = ((userScore+1) * 10) + Number(userInfo.score);
-    
+    if (id) {
+      if (!completedQuizes.includes(id)) {
+        const newScore = (userScore + 1) * 10 + Number(userInfo.score);
+
         updateUserScore(newScore);
         try {
           await setDoc(doc(db, "userScores", userInfo.uid), {
@@ -79,12 +79,12 @@ export const QuizInfo = () => {
         } catch (e) {
           console.error(e);
         }
-        try{
-            addCompletedQuiz(userInfo.uid,id);
-        }catch(e){
+        try {
+          addCompletedQuiz(userInfo.uid, id);
+        } catch (e) {
           console.log(e);
         }
-      }else{
+      } else {
         PushNotifictionMessage("You have already completed this quiz, you wont get any extra points!", NotificationType.Error);
       }
     }
@@ -94,15 +94,19 @@ export const QuizInfo = () => {
       {!startQuiz ? (
         <div className={`${isQuizOver ? "hidden" : ""}`}>
           <p className="font-bold text-PrimaryText text-[25px] text-center">{quizInfo?.Name}</p>
-          {
-            quizInfo?.UserId!==undefined?<><DeleteQuiz quizUserId={quizInfo?.UserId} userId={userInfo.uid} image={quizInfo?.Image} quizId={id?id:""}/></>:<></>
-          }
-          
+          {quizInfo?.UserId !== undefined ? (
+            <>
+              <DeleteQuiz quizUserId={quizInfo?.UserId} userId={userInfo.uid} image={quizInfo?.Image} quizId={id ? id : ""} />
+            </>
+          ) : (
+            <></>
+          )}
+
           <div className="w-[80%] flex place-content-between mx-auto mt-[10px]">
             <p className="text-[12px]">Created:{quizInfo?.CreatedAt.toString().substring(0, 10)}</p>
             <p className="text-[12px]">By:{quizInfo?.CreatedBy}</p>
           </div>
-          <div className="md:w-[350px] w-[90%] md:h-[300px] h-[200px] mx-auto mt-[10px]">
+          <div className="md:w-[350px] w-[90%] md:h-[250px] h-[200px] mx-auto mt-[10px]">
             <img src={quizInfo?.Image} alt={quizInfo?.Name} className="w-[100%] h-[100%] rounded-md" />
           </div>
           <div className="w-[80%] mx-auto mt-[20px]">
@@ -161,7 +165,9 @@ export const QuizInfo = () => {
             Your Score: {userScore} out of {quizInfo?.Questions.length}
           </p>
           <div className="w-[150px] h-[35px] mx-auto mt-5">
-            <button onClick={()=>navigate("/quizes")} className="w-[100%] h-[100%] rounded-md bg-PrimaryText text-gray-100 hover:bg-PrimaryText/80 font-bold">Back to quizzes</button>
+            <button onClick={() => navigate("/quizes")} className="w-[100%] h-[100%] rounded-md bg-PrimaryText text-gray-100 hover:bg-PrimaryText/80 font-bold">
+              Back to quizzes
+            </button>
           </div>
         </div>
       ) : (

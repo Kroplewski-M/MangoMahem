@@ -4,15 +4,15 @@ import { useUserInfo } from "../context/UserContext";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const {userInfo} = useUserInfo();
-  
-  const navigateUser = ()=>{
-    if(userInfo.uid!==''){
-      navigate('/quizes');
-    }else{
-      navigate('/register');
+  const { userInfo } = useUserInfo();
+
+  const navigateUser = () => {
+    if (userInfo.uid !== "") {
+      navigate("/quizes");
+    } else {
+      navigate("/register");
     }
-  }
+  };
   return (
     <section>
       <div className="absolute md:right-[40vw] right-[10vw] opacity-[0.7]">
@@ -26,14 +26,23 @@ export const Home = () => {
           </button>
         </div>
         <div className="flex md:px-5 mt-[70px] md:justify-around flex-col md:flex-row space-y-4 md:space-y-0">
-          <div className="w-[300px] h-[300px] bg-secondary rounded shadow-lg mx-auto md:mx-0">
+          <div className="w-[300px] min-h-[300px] pb-[5px] bg-secondary rounded shadow-lg mx-auto md:mx-0">
             <p className="text-PrimaryText text-center mt-[5px] font-bold text-[40px]">Create</p>
+            <div className="w-[90%] h-[90%] mx-auto pt-[10px]">
+              <img src="./Create.png" alt="" className="rounded-md border-2 border-gray-200" />
+            </div>
           </div>
-          <div className="w-[300px] h-[300px] bg-secondary rounded shadow-lg mx-auto md:mx-0">
+          <div className="w-[300px] min-h-[300px] pb-5 bg-secondary rounded shadow-lg mx-auto md:mx-0">
             <p className="text-PrimaryText text-center mt-[5px] font-bold text-[40px]">Play</p>
+            <div className="w-[90%] h-[90%] mx-auto pt-[10px]">
+              <img src="./play.png" alt="" className="rounded-md border-2 border-gray-200" />
+            </div>
           </div>
-          <div className="w-[300px] h-[300px] bg-secondary rounded shadow-lg mx-auto md:mx-0">
+          <div className="w-[300px] min-h-[300px] bg-secondary rounded shadow-lg mx-auto md:mx-0 pb-5">
             <p className="text-PrimaryText text-center mt-[5px] font-bold text-[40px]">Compete</p>
+            <div className="w-[90%] h-[90%] mx-auto pt-[10px]">
+              <img src="./compete.png" alt="" className="rounded-md border-2 border-gray-200" />
+            </div>
           </div>
         </div>
       </div>
