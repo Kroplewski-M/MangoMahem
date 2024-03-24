@@ -7,6 +7,7 @@ import { useUserInfo } from "../context/UserContext";
 import { QuizSVG } from "../assets/SVG/QuizSVG";
 import { AddSVG } from "../assets/SVG/AddSVG";
 import { LeaderboardSVG } from "../assets/SVG/LeaderboardSVG";
+import { CloseSVG } from "../assets/SVG/CloseSVG";
 
 export const Nav = () => {
   const [openNav, setOpenNav] = useState(false);
@@ -43,33 +44,30 @@ export const Nav = () => {
     }
   }, [windowSize]);
 
-  const navigateUser = () => {
-    if (isLoggedIn()) {
-      navigate("/userProfile");
-      return;
-    }
-    navigate("/login");
+  const navigateUser = (link: string) => {
+    navigate(`${link}`);
+    setOpenNav(false);
     return;
   };
   return (
     <nav className={`w-[100vw] h-[70px] bg-secondary duration-200 ease-linear flex relative z-[100] sticky top-0 shadow-lg`}>
-      <div className="self-center flex pl-[10px] hover:cursor-pointer" onClick={() => navigate("/")}>
+      <div className="self-center flex pl-[10px] hover:cursor-pointer" onClick={() => navigateUser("/")}>
         <LogoSVG width={50} height={50} />
         <p className="font-bold self-center pl-2 text-PrimaryText">Mango Mayhem</p>
       </div>
       <div className={`flex-row ${openNav ? "fixed top-0 right-0 bg-secondary w-[90%] h-[100vh] text-center pt-10 animate-SlideIn" : "hidden"} md:inline-flex self-center w-[380px] mx-auto`}>
         <div className="absolute right-5 top-5 hover:cursor-pointer md:hidden" onClick={() => setOpenNav(false)}>
-          X
+          <CloseSVG width={40} height={40} fill="#46230A" />
         </div>
-        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer md:pl-0 pl-16" onClick={() => navigate("/quizes")}>
+        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer md:pl-0 pl-16" onClick={() => navigateUser("/quizes")}>
           <QuizSVG width={35} height={35} fill="#46230A" />
           <p className="flex self-center pl-[10px] font-bold text-PrimaryText mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Quizzes</p>
         </div>
-        <div className="flex self-center decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 md:pl-0 pl-16" onClick={() => navigate("/create-quiz")}>
+        <div className="flex self-center decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 md:pl-0 pl-16" onClick={() => navigateUser("/create-quiz")}>
           <AddSVG width={25} height={25} fill="#46230A" />
           <p className=" pl-[10px] font-bold text-PrimaryText hover:cursor-pointer mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Create</p>
         </div>
-        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer pl-16 md:pl-0" onClick={() => navigate("/leaderboard")}>
+        <div className="flex decoration-[#46230A] hover:underline underline-offset-[5px] decoration-4 hover:cursor-pointer pl-16 md:pl-0" onClick={() => navigateUser("/leaderboard")}>
           <LeaderboardSVG width={40} height={40} fill="#46230A" />
           <p className="flex self-center font-bold text-PrimaryText  mb-5 md:mb-0 text-[25px] md:text-[16px] md:mr-5">Leaderboard</p>
         </div>
@@ -78,7 +76,7 @@ export const Nav = () => {
             <LogoSVG width={30} height={30} />
             <p className="text-PrimaryText font-bold">{userScore}</p>
           </div>
-          <div className="hover:cursor-pointer ml-[15px]" onClick={navigateUser}>
+          <div className="hover:cursor-pointer ml-[15px]" onClick={() => navigateUser("/userProfile")}>
             <UserSvg width={35} height={35} fill="#46230A" />
           </div>
         </div>
