@@ -22,7 +22,7 @@ export interface QuestionInterface {
 
 export const CreateQuiz = () => {
   const { PushNotifictionMessage } = useNotifications();
-  const {userInfo} = useUserInfo();
+  const { userInfo } = useUserInfo();
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [quizName, setQuizName] = useState("");
@@ -186,7 +186,7 @@ export const CreateQuiz = () => {
   };
   return (
     <div className="w-[98%] md:w-[500px] mx-auto rounded bg-secondary pb-5">
-      <h1 className="font-bold text-[30px] mt-5 text-center text-PrimaryText">Create Quiz</h1>
+      <h1 className="font-bold text-[30px] mt-5 text-center text-PrimaryText">Create A Quiz</h1>
 
       <div className="w-[300px] mx-auto mt-5">
         <div className="flex flex-wrap">
@@ -221,7 +221,7 @@ export const CreateQuiz = () => {
           <label htmlFor="Name" className="font-bold text-PrimaryText">
             Quiz Name:
           </label>
-          <input type="text" className="w-[100%] bg-mainBg rounded-md h-[40px] block ps-[5px] mt-[5px]" placeholder="Mango Quiz" value={quizName} onChange={(e) => setQuizName(e.target.value)} />
+          <input type="text" className="w-[100%] bg-mainBg rounded-md h-[40px] block ps-[5px] mt-[5px]" placeholder="Mangoes Quiz" value={quizName} onChange={(e) => setQuizName(e.target.value)} />
         </div>
         <div>
           <label htmlFor="Description" className="font-bold text-PrimaryText">
@@ -229,7 +229,7 @@ export const CreateQuiz = () => {
           </label>
           <textarea
             className="w-[100%] bg-mainBg rounded-md h-[100px] block ps-[5px] mt-[5px]"
-            placeholder="This quiz is about mangos"
+            placeholder="This quiz is about mangoes"
             value={quizDescription}
             onChange={(e) => setQuizDescription(e.target.value)}
           />
@@ -247,7 +247,7 @@ export const CreateQuiz = () => {
             type="text"
             name="question"
             className="w-[300px] block h-[35px] rounded-md pl-[5px] mt-[5px]  bg-mainBg focus:outline-none"
-            placeholder="Which country grows the most mangos?"
+            placeholder="Which country grows the most mangoes?"
             onChange={(e) => handleQuestionChange(questionIndex, e)}
           />
           <p className="font-bold text-PrimaryText mt-5">Answers:</p>

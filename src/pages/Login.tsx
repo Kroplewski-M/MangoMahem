@@ -59,7 +59,7 @@ export const Login = () => {
             <FruitBowlSVG width={300} height={300} fill="#FFFFFF" />
           </div>
           <p className="text-[40px] font-bold text-PrimaryText z-[50]">Don't have an account?</p>
-          <p className="text-[30px] font-bold text-PrimaryText z-[50]">Register now</p>
+          <p className="text-[30px] font-bold text-PrimaryText z-[50]">Register now!</p>
           <div className="mx-auto w-[150px] h-[35px] mt-5 z-[50]">
             <button className="w-[100%] h-[100%] bg-PrimaryText hover:font-bold rounded shadow-md text-gray-100" onClick={() => navigate("/register")}>
               Register

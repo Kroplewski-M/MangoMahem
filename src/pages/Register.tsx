@@ -63,7 +63,7 @@ export const Register = () => {
             <FruitBowlSVG width={300} height={300} fill="#FFFFFF" />
           </div>
           <p className="text-[40px] font-bold text-PrimaryText z-[50]">Already have an account?</p>
-          <p className="text-[30px] font-bold text-PrimaryText z-[50]">Log in now</p>
+          <p className="text-[30px] font-bold text-PrimaryText z-[50]">Log in now!</p>
           <div className="mx-auto w-[150px] h-[35px] mt-5 z-[50]">
             <button className="w-[100%] h-[100%] bg-PrimaryText hover:font-bold rounded shadow-md text-gray-100" onClick={() => navigate("/login")}>
               Log in
@@ -128,7 +128,7 @@ export const Register = () => {
                     hasCapitalLetter: (value) => /[A-Z]/.test(value) || "Must contain at least one capital letter",
                   },
                 })}
-                placeholder="Password"
+                placeholder="ILoveMangoes123!"
               />
               <p className="font-light text-red-700">{errors.Password?.message}</p>
             </div>
