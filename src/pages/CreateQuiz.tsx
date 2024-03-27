@@ -228,7 +228,7 @@ export const CreateQuiz = () => {
             Quiz Description:
           </label>
           <textarea
-            className="w-[100%] bg-mainBg rounded-md h-[100px] block ps-[5px] mt-[5px]"
+            className="w-[100%] bg-mainBg rounded-md max-h-[200px] h-[100px] block ps-[5px] mt-[5px]"
             placeholder="This quiz is about mangoes"
             value={quizDescription}
             onChange={(e) => setQuizDescription(e.target.value)}
